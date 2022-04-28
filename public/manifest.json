@@ -1,0 +1,15 @@
+{
+  "name": "Radar Signals",
+  "description": "Find signals. Share them.",
+  "version": "1.0",
+  "manifest_version": 3,
+  "action": {
+      "default_popup": "index.html",
+      "default_title": "Capture Signal"
+  },
+  "icons": {
+      "16": "logo192.png",
+      "48": "logo192.png",
+      "128": "logo192.png"
+  }
+}
