@@ -14,6 +14,11 @@ export const GlobalStyle = createGlobalStyle`
 		--primary-border-color: rgba(0, 0, 0, 1);
 	}
 
+	* {
+		box-sizing: border-box;
+		/* outline: 1px solid red; */
+	}
+
 	html {
 		width: --extension-width;
 		height: var(--extension-height);
@@ -32,7 +37,7 @@ export const GlobalStyle = createGlobalStyle`
 			sans-serif;
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
-		outline: 1px solid red;
+		/* outline: 1px solid red; */
 	}
 
 	code {
@@ -44,10 +49,10 @@ export const GlobalStyle = createGlobalStyle`
 		text-decoration: none;
 	}
 
-	* {
-		box-sizing: border-box;
-		/* outline: 1px solid red; */
+	fieldset {
+		border: none;
 	}
+
 
 
 `;

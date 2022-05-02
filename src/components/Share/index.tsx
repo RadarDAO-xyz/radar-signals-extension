@@ -2,11 +2,47 @@ import { FC } from "react";
 import { Formik, Field, Form, FormikHelpers } from "formik";
 import styled from "styled-components";
 
-interface Values {
+import channelData from "../../data/.test.channels.json";
+import * as Yup from "yup";
+
+interface IShareFormValues {
   username: string;
   userComment: string;
-  radarChannel: string;	
+  radarChannel: string;
 }
+interface IRadarChannels {
+  channels: IRadarChannelItem[];
+}
+interface IRadarChannelItem {
+  name: string;
+  category: string;
+  id: string;
+  webhook: URL;
+}
+
+interface IFormValues {
+	username: string;
+	userComment: string;
+	radarChannel: string;
+}
+
+const { channels } = channelData;
+
+
+
+const validationSchema = Yup.object().shape({
+  username: Yup.string()
+    .min(4, "too short")
+    .max(8, "too long")
+    .required("needed")
+});
+
+/**
+ * Yup.object().shape({
+ *   username: Yup.string().required().matches(/^.{3,32}#[0-9]{4}$/, "Discord handle required")
+ * })}
+ */
+
 
 export const Share: FC = () => {
   return (
@@ -15,15 +51,34 @@ export const Share: FC = () => {
         initialValues={{
           username: "",
           userComment: "",
-          radarChannel: "",
+          radarChannel: "DEFAULT",
         }}
+				// validate={(values) => {
+				// 	const { username, userComment, radarChannel } = values
+				// 	const errors:Partial<IFormValues> = { }
+
+				// 	// if (username.match(/^.{3,32}#[0-9]{4}$/)) console.log("Valid Discord")
+				// 	if (!username.length) errors.username = "What's your Discord handle?"
+
+				// 	return errors
+					
+				// }}
+				validationSchema={validationSchema}
         onSubmit={(
-          values: Values,
-          { setSubmitting }: FormikHelpers<Values>
+          values: IShareFormValues,
+          { setSubmitting }: FormikHelpers<IShareFormValues>
         ) => {
           setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
+            const { username, userComment, radarChannel } = values;
+            alert(
+              JSON.stringify({ username, userComment, radarChannel }, null, 2)
+            );
             setSubmitting(false);
+            const selectedChannel = channels.find(
+              (channel) => channel.id === radarChannel
+            );
+            alert(JSON.stringify(selectedChannel));
+            // http()
           }, 500);
         }}
       >
@@ -38,12 +93,19 @@ export const Share: FC = () => {
           </fieldset>
 
           <fieldset>
-						<label htmlFor="radarChannel">Channel</label>
+            <label htmlFor="radarChannel">Channel</label>
             <Field id="radarChannel" name="radarChannel" as="select">
-              <option selected disabled>Select</option>
-              <option value="001">Channel 1</option>
-              <option value="002">Channel 2</option>
-              <option value="003">Channel 3</option>
+              <option value={`DEFAULT`} disabled>
+                Select
+              </option>
+              {channels.map((channel) => {
+                const { name, id } = channel;
+                return (
+                  <option key={id} value={id}>
+                    {name}
+                  </option>
+                );
+              })}
             </Field>
           </fieldset>
 
@@ -64,22 +126,22 @@ export const Share: FC = () => {
   );
 };
 
-
 // TODO - Move to ./style as SC
 const StyledForm = styled.div`
-	form {
-		outline: 1px solid red;
-	}
-	fieldset {
-		outline: 1px solid green;
-		display: grid;
-		grid-template-areas:  "label"
-													"input";
-	}
-	label {
-		grid-area: "label";
-	}
-	input {
-		grid-area: "input";
-	}
-`
+  form {
+    /* outline: 1px solid red; */
+  }
+  fieldset {
+    /* outline: 1px solid green; */
+    display: grid;
+    grid-template-areas:
+      "label"
+      "input";
+  }
+  label {
+    grid-area: "label";
+  }
+  input {
+    grid-area: "input";
+  }
+`;
