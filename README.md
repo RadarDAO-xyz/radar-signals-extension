@@ -11,7 +11,8 @@
 * `yarn dev`
 * Then visit [http://localhost:3000](http://localhost:3000) in your web browser
 
-> The page will reload if you make edits.\ You will also see any lint errors in the console.
+> The page will reload if you make edits.
+> You will also see any lint errors in the console.
 
 #### Production (run as a Chrome extension)
 
@@ -24,5 +25,6 @@
 > TODO 
 * `yarn test`
 
-> Launches the test runner in the interactive watch mode.\See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+> Launches the test runner in the interactive watch mode.
+> See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
