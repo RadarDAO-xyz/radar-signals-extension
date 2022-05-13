@@ -1,27 +1,25 @@
 # Radar Signals Chrome Extension
 ### Quick Start
 
-In the project directory, you can run:
-* `yarn start`
+#### Install dependencies
+* `yarn` or `yarn install`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+#### Development
+* `yarn dev`
+* Then visit [http://localhost:3000](http://localhost:3000) in your web browser
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+> The page will reload if you make edits.\ You will also see any lint errors in the console.
 
-* `yarn test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+#### Production (run as a Chrome extension)
 
 * `yarn build`
+* Now, [load the extension from the `build` folder](https://support.google.com/chrome/a/answer/2714278?hl=en#:~:text=At%20the%20top%20right%2C%20turn,the%20app%20or%20extension%20folder.&text=click%20the%20app%20or%20extension.)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+#### Testing
+> TODO 
+* `yarn test`
+
+> Launches the test runner in the interactive watch mode.\See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
