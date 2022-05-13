@@ -3,6 +3,9 @@
 
 #### Install dependencies
 * `yarn` or `yarn install`
+* In `src/data/` copy `.test.channels.example.json` to a new file called `.test.channels.json` (e.g. `src/data/.test.channels.json`) and populate with your channel names, categories, id's and webhooks.
+
+> RADAR DAO members: ask in [#product-squad](https://discord.com/channels/913873017287884830/961996856198590544) for an example file with test channels
 
 #### Development
 * `yarn dev`
