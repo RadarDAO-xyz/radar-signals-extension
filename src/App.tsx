@@ -1,11 +1,13 @@
 import styled from "styled-components";
 import { Share } from "./components/Share";
 
+import radarLogo from "./assets/images/logo.radar.black.svg";
+
 function App() {
   return (
-    <StyledApp className="App">
-      <header className="App-header">
-        <h1>Radar</h1>
+    <StyledApp>
+      <header id="header">
+        <h1 className="logo">Radar</h1>
         <Share />
       </header>
     </StyledApp>
@@ -13,11 +15,20 @@ function App() {
 }
 
 const StyledApp = styled.div`
+
   text-align: center;
 
-  .App-logo {
-    height: 40vmin;
+  .logo {
     pointer-events: none;
+    width: 100px;
+    height: 0;
+    padding-top: 18px;
+    background-image: url(${radarLogo});
+    background-size: 100px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -26,7 +37,7 @@ const StyledApp = styled.div`
     }
   }
 
-  .App-header {
+  #header {
     background-color: white;
     min-height: 100vh;
     display: flex;

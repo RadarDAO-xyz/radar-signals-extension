@@ -191,13 +191,17 @@ const StyledForm = styled.div`
 
   form {
     /* outline: 1px solid red; */
+    width: 100%;
   }
   fieldset {
     /* outline: 1px solid green; */
     display: grid;
+    width: 100%;
+    grid-template-columns: repeat(1, [col-start] 1fr);
     grid-template-areas:
       "label"
       "input";
+    gap: var(--m-base);
   }
   label {
     grid-area: "label";

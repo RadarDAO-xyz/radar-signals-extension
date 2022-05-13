@@ -5,7 +5,7 @@ export const GlobalStyle = createGlobalStyle`
 
 	:root {
 
-		--extension-width: 320px;
+		--extension-width: 360px;
 		--extension-height: 280px;
 
 		--base-unit: 2px; 
@@ -20,7 +20,7 @@ export const GlobalStyle = createGlobalStyle`
 	}
 
 	html {
-		width: --extension-width;
+		/* width: --extension-width; */
 		height: var(--extension-height);
 	}
 
@@ -28,7 +28,7 @@ export const GlobalStyle = createGlobalStyle`
 	body {
 		margin: 0;
 		padding: 0; 
-		max-width: var(--extension-width);
+		/* max-width: var(--extension-width); */
 	}
 
 	body {
@@ -37,7 +37,6 @@ export const GlobalStyle = createGlobalStyle`
 			sans-serif;
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
-		/* outline: 1px solid red; */
 	}
 
 	code {
@@ -51,6 +50,12 @@ export const GlobalStyle = createGlobalStyle`
 
 	fieldset {
 		border: none;
+	}
+
+	textarea {
+		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+			'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+			sans-serif;
 	}
 
 
