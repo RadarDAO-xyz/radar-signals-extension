@@ -1,7 +1,8 @@
-import { FC, ReactFragment, ReactPortal } from "react";
+import React, { FC, ReactFragment, ReactPortal } from "react";
 import styled from "styled-components";
-
 import channelData from "../../data/.test.channels.json";
+import channelSelectedIcon from "../../assets/images/channelSelectedIcon.svg";
+import { channel } from "diagnostics_channel";
 
 // interface IRadarChannelItem {
 //   name: string;
@@ -23,7 +24,14 @@ interface IFormValues {
 
 const { channels } = channelData;
 
-export const Login = ({ nextStage }: { nextStage: () => void }) => {
+interface PropTypes {
+  nextStage: () => void;
+  selectedChannel: any;
+}
+
+export const Share = ({ nextStage, selectedChannel }: PropTypes) => {
+  const [signalComment, setsignalComment] = React.useState("");
+
   const initialValues: IFormValues = {
     username: "",
     url: "",
@@ -66,36 +74,79 @@ export const Login = ({ nextStage }: { nextStage: () => void }) => {
 
   const renderError = (
     message: boolean | ReactFragment | ReactPortal | null | undefined
-  ) => <p className='help is-danger'>{message}</p>;
+  ) => <p className="help is-danger">{message}</p>;
 
   return (
-    <Wrapper>
-      <button type='button' onClick={nextStage}>
-        <strong>Connect your Discord →</strong>
-      </button>
-      <button>
-        <strong>
-          <a
-            href='https://mirror.xyz/0x149D46eC060e75AE188876AdB6b24024637003C7/UksB2j5ldUAFifjle3w1cGDQCMyHMHCW_9RDSmAhHmw'
-            target='_blank'
-          >
-            Learn more about RADAR →
-          </a>
-        </strong>
-      </button>
-      <button>
-        <strong>
-          <a
-            href='https://discord.com/channels/@me/976638042754408458/977035100791406662'
-            target='_blank'
-          >
-            How to use this plugin →
-          </a>
-        </strong>
-      </button>
-    </Wrapper>
+    <>
+      <Wrapper>
+        <h2>Why is this signal interesting?</h2>
+        <textarea
+          className="text-area"
+          placeholder="Write a comment..."
+          onChange={(e) => setsignalComment(e.target.value)}
+        />
+        <div style={{ display: selectedChannel?.label ? "none" : "block" }}>
+          <button type="button" onClick={nextStage} className="button">
+            Select Channel ↓
+          </button>
+        </div>
+
+        <div
+          className="box"
+          style={{ display: selectedChannel?.label ? "block" : "none" }}
+        >
+          <p>
+            Channel selected{" "}
+            <img
+              src={channelSelectedIcon}
+              alt="Done"
+              style={{
+                width: "16px",
+              }}
+            />
+          </p>
+          <p style={{ fontWeight: 500 }}>{selectedChannel?.label}</p>
+        </div>
+
+        <button
+          className="button btn-send"
+          type="button"
+          disabled={!selectedChannel?.label || !signalComment}
+        >
+          SEND
+        </button>
+      </Wrapper>
+    </>
   );
 };
 
 // TODO - Move to ./style as SC
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  .text-area {
+    background: #fff;
+    padding: 12px 0px 0px 14px;
+    border: 1px solid #000;
+    width: 269px;
+    height: 100px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+    resize: none;
+    &:active {
+      box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.5);
+    }
+  }
+  .box {
+    background: #fff;
+    padding: 7.15px;
+    border: 1px solid #000;
+    width: 269px;
+    height: 100px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+    resize: none;
+    margin: 5px;
+    display: "flex";
+    flex-direction: "column";
+  }
+  .btn-send {
+    margin-top: 5px;
+  }
+`;
