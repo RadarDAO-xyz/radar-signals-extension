@@ -23,7 +23,7 @@ interface IFormValues {
 
 const { channels } = channelData;
 
-export const Login = ({ nextStage }: { nextStage: () => void }) => {
+export const Channel: FC = () => {
   const initialValues: IFormValues = {
     username: "",
     url: "",
@@ -70,32 +70,28 @@ export const Login = ({ nextStage }: { nextStage: () => void }) => {
 
   return (
     <Wrapper>
-      <button type='button' onClick={nextStage}>
-        <strong>Connect your Discord →</strong>
-      </button>
-      <button>
-        <strong>
-          <a
-            href='https://mirror.xyz/0x149D46eC060e75AE188876AdB6b24024637003C7/UksB2j5ldUAFifjle3w1cGDQCMyHMHCW_9RDSmAhHmw'
-            target='_blank'
-          >
-            Learn more about RADAR →
-          </a>
-        </strong>
-      </button>
-      <button>
-        <strong>
-          <a
-            href='https://discord.com/channels/@me/976638042754408458/977035100791406662'
-            target='_blank'
-          >
-            How to use this plugin →
-          </a>
-        </strong>
+      <h2>Why is this signal interesting?</h2>
+      <textarea placeholder='Write a comment...' />
+      <button type='button'>Select Channel ↓</button>
+      <button className='btn-send' type='button'>
+        SEND
       </button>
     </Wrapper>
   );
 };
 
 // TODO - Move to ./style as SC
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  textarea {
+    background: #fff;
+    padding: 22px;
+    border: 1px solid #000;
+    width: 269px;
+    height: 100px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+    resize: none;
+    &:active {
+      box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.5);
+    }
+  }
+`;
