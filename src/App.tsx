@@ -94,6 +94,14 @@ const StyledApp = styled.div`
     font-family: "WonderType";
     src: url("/assets/fonts/WonderType-Regular.otf");
   }
+  @font-face {
+    font-family: "PostGrotesk";
+    src: url("/assets/fonts/PostGrotesk.otf");
+  }
+  @font-face {
+    font-family: "MicrogrammaExtdD";
+    src: url("/assets/fonts/MicrogrammaExtdD.otf");
+  }
 
   width: 350px;
   height: 500px;
@@ -128,10 +136,18 @@ const StyledApp = styled.div`
     color: black;
   }
   .button {
+    font-family: 'Post Grotesk';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 24px;
     margin-top:18px;
+    width: 269px;
+    height: 100px;
     background: #fff;
     padding: 22px 0;
-    border: 1px solid #000;
+    background: #FFFFFF;
+    border: 0.965581px solid #000000;
     cursor: pointer;
     width: 80%;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
@@ -140,15 +156,17 @@ const StyledApp = styled.div`
     &:active {
       box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.5);
     }
-    &.btn-send {
-      background: #000;
-      color: #fff;
-    }
+  }
+
+  .btn-send {
+    background: #000;
+    color: #fff;
   }
 
   .button:disabled{
     background: #7C7A7A;
     cursor : not-allowed;
+    border:none;
   }
   .wrapper {
     background-size: cover;

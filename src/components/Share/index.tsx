@@ -79,23 +79,27 @@ export const Share = ({ nextStage, selectedChannel }: PropTypes) => {
   return (
     <>
       <Wrapper>
-        <h2>Why is this signal interesting?</h2>
+        <h2 className="head">Why is this signal interesting?</h2>
         <textarea
           className="text-area"
           placeholder="Write a comment..."
           onChange={(e) => setsignalComment(e.target.value)}
         />
         <div style={{ display: selectedChannel?.label ? "none" : "block" }}>
-          <button type="button" onClick={nextStage} className="button">
+          <button
+            type="button"
+            onClick={nextStage}
+            className="button btn-select"
+          >
             Select Channel ↓
           </button>
         </div>
 
         <div
-          className="box"
+          className="box box-selected"
           style={{ display: selectedChannel?.label ? "block" : "none" }}
         >
-          <p>
+          <p className="channel-selected-msg">
             Channel selected{" "}
             <img
               src={channelSelectedIcon}
@@ -105,7 +109,7 @@ export const Share = ({ nextStage, selectedChannel }: PropTypes) => {
               }}
             />
           </p>
-          <p style={{ fontWeight: 500 }}>{selectedChannel?.label}</p>
+          <p className="selected-channel-value">{selectedChannel?.label}</p>
         </div>
 
         <button
@@ -122,12 +126,48 @@ export const Share = ({ nextStage, selectedChannel }: PropTypes) => {
 
 // TODO - Move to ./style as SC
 const Wrapper = styled.div`
+  .selected-channel-value {
+    font-family: "Post Grotesk";
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 19px;
+    color: #000;
+    text-align: center;
+  }
+  .channel-selected-msg {
+    font-family: "Post Grotesk";
+    font-style: normal;
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 24px;
+  }
+  .btn-select {
+    font-family: "Post Grotesk";
+    font-style: normal;
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 24px;
+  }
+  .head {
+    font-family: "Post Grotesk";
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 21px;
+    text-align: center;
+  }
   .text-area {
-    background: #fff;
+    font-family: "Post Grotesk";
+    font-style: normal;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 19px;
     padding: 12px 0px 0px 14px;
-    border: 1px solid #000;
     width: 269px;
-    height: 100px;
+    height: 128px;
+    background: #ffffff;
+    border: 0.903246px solid #000000;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
     resize: none;
     &:active {
@@ -137,7 +177,7 @@ const Wrapper = styled.div`
   .box {
     background: #fff;
     padding: 7.15px;
-    border: 1px solid #000;
+    border: 0.903246px solid #000000;
     width: 269px;
     height: 100px;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
@@ -147,6 +187,12 @@ const Wrapper = styled.div`
     flex-direction: "column";
   }
   .btn-send {
-    margin-top: 5px;
+    margin-top: 18px;
+    font-family: "MicrogrammaExtdD";
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 23px;
+    letter-spacing: 0em;
+    text-align: center;
   }
 `;
