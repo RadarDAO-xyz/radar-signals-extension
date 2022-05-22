@@ -126,6 +126,9 @@ export const Share = ({ nextStage, selectedChannel }: PropTypes) => {
 
 // TODO - Move to ./style as SC
 const Wrapper = styled.div`
+  .box-selected {
+    height: 68px !important;
+  }
   .selected-channel-value {
     font-family: "Post Grotesk";
     font-style: normal;
@@ -134,6 +137,7 @@ const Wrapper = styled.div`
     line-height: 19px;
     color: #000;
     text-align: center;
+    margin: 2px auto;
   }
   .channel-selected-msg {
     font-family: "Post Grotesk";
@@ -141,6 +145,7 @@ const Wrapper = styled.div`
     font-weight: 300;
     font-size: 18px;
     line-height: 24px;
+    margin: 2px auto;
   }
   .btn-select {
     font-family: "Post Grotesk";
@@ -185,14 +190,5 @@ const Wrapper = styled.div`
     margin: 5px;
     display: "flex";
     flex-direction: "column";
-  }
-  .btn-send {
-    margin-top: 18px;
-    font-family: "MicrogrammaExtdD";
-    font-size: 18px;
-    font-weight: 700;
-    line-height: 23px;
-    letter-spacing: 0em;
-    text-align: center;
   }
 `;

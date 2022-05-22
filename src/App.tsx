@@ -161,6 +161,13 @@ const StyledApp = styled.div`
   .btn-send {
     background: #000;
     color: #fff;
+    margin-top: 18px;
+    font-family: "MicrogrammaExtdD"!important;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 23px;
+    letter-spacing: 0em;
+    text-align: center;
   }
 
   .button:disabled{
