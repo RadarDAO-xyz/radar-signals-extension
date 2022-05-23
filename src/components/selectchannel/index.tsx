@@ -166,6 +166,7 @@ export const SelectChannel = ({
 const Wrapper = styled.div`
   .select-channel-head {
     margin-top: -40px;
+    font-family: "PostGrotesk";
   }
   .text-area {
     background: #fff;

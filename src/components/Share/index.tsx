@@ -130,7 +130,7 @@ const Wrapper = styled.div`
     height: 68px !important;
   }
   .selected-channel-value {
-    font-family: "Post Grotesk";
+    font-family: "PostGrotesk";
     font-style: normal;
     font-weight: 700;
     font-size: 14px;
@@ -140,7 +140,7 @@ const Wrapper = styled.div`
     margin: 2px auto;
   }
   .channel-selected-msg {
-    font-family: "Post Grotesk";
+    font-family: "PostGrotesk";
     font-style: normal;
     font-weight: 300;
     font-size: 18px;
@@ -148,14 +148,14 @@ const Wrapper = styled.div`
     margin: 2px auto;
   }
   .btn-select {
-    font-family: "Post Grotesk";
+    font-family: "PostGrotesk";
     font-style: normal;
     font-weight: 300;
     font-size: 18px;
     line-height: 24px;
   }
   .head {
-    font-family: "Post Grotesk";
+    font-family: "PostGrotesk";
     font-style: normal;
     font-weight: 700;
     font-size: 16px;
@@ -163,7 +163,7 @@ const Wrapper = styled.div`
     text-align: center;
   }
   .text-area {
-    font-family: "Post Grotesk";
+    font-family: "PostGrotesk";
     font-style: normal;
     font-weight: 300;
     font-size: 14px;

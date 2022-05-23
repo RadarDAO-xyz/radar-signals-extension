@@ -112,7 +112,7 @@ const StyledApp = styled.div`
       width: 135px;
       height: 29px;
     }
-    margin-bottom: 60px;
+    margin-bottom: 46.56px;
   }
 
   h2 {
