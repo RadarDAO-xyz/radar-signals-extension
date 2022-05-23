@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../radar-signal-backend"
+		}
+	],
+	"settings": {}
+}
