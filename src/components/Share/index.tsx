@@ -187,7 +187,7 @@ const Wrapper = styled.div`
     height: 100px;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
     resize: none;
-    margin: 5px;
+    margin: 18px 5px 0px 5px;
     display: "flex";
     flex-direction: "column";
   }

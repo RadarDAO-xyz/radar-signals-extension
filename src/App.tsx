@@ -136,7 +136,7 @@ const StyledApp = styled.div`
     color: black;
   }
   .button {
-    font-family: 'Post Grotesk';
+    font-family: 'PostGrotesk';
     font-style: normal;
     font-weight: 500;
     font-size: 18px;

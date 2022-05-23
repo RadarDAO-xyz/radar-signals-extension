@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Select, {
   components,
   ControlProps,
-  Props,
+  GroupProps,
   StylesConfig,
   GroupBase,
 } from "react-select";
@@ -33,14 +33,69 @@ const { channels } = channelData;
 const customSelectStyles: StylesConfig<unknown, boolean, GroupBase<unknown>> = {
   input: (styles) => ({
     ...styles,
-    fontFamily: "Post Grotesk",
+    fontFamily: "PostGrotesk",
     fontStyle: "normal",
     fontWeight: 500,
     fontSize: "12.2273px",
     lineHeight: "16px",
+  }),
+  control: (styles) => ({
+    ...styles,
+    paddingLeft: "10px",
+  }),
+  placeholder: (styles) => ({
+    ...styles,
     textAlign: "left",
+    fontFamily: "PostGrotesk",
+    fontStyle: "normal",
+    fontWeight: 500,
+    fontSize: "12.2273px",
+    lineHeight: "16px",
+  }),
+  menu: (styles) => ({
+    ...styles,
+    fontFamily: "PostGrotesk",
+    fontSize: "12px",
+    fontWeight: 400,
+    lineHeight: "16px",
+    letterSpacing: "0em",
+  }),
+  option: (styles) => ({
+    ...styles,
+    background: "#FFF",
+    textAlign: "left",
+    ":hover": {
+      background: "#8F00FF",
+      color: "#fff",
+    },
+  }),
+  groupHeading: (styles) => ({
+    ...styles,
+    background: "#FFF",
+    fontFamily: "PostGrotesk",
+    color: "#000",
+    fontStyle: "normal",
+    fontWeight: 700,
+    fontSize: "14px",
+    lineHeight: "19px",
+    textAlign: "left",
+    textTransform: "none",
+  }),
+  group: (styles) => ({
+    ...styles,
+    color: "#000",
+    fontFamily: "PostGrotesk",
+    fontWeight: 100,
+    fontSize: "12.2273px",
+    lineHeight: "16px",
   }),
 };
+
+const Group = (props: GroupProps<any | any, false>) => (
+  <div>
+    <components.Group {...props} />
+  </div>
+);
 
 const Control = ({ children, ...props }: ControlProps<any, false>) => {
   // @ts-ignore
@@ -57,9 +112,9 @@ const Control = ({ children, ...props }: ControlProps<any, false>) => {
         <path
           d="M12.2316 12.4567L9.57216 9.79726M11.0089 6.34306C11.0089 9.04423 8.81913 11.234 6.11796 11.234C3.41679 11.234 1.22705 9.04423 1.22705 6.34306C1.22705 3.64188 3.41679 1.45215 6.11796 1.45215C8.81913 1.45215 11.0089 3.64188 11.0089 6.34306Z"
           stroke="#9E9C9C"
-          stroke-width="1.22273"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="1.22273"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
       </svg>
 
@@ -77,10 +132,7 @@ export const SelectChannel = ({
   prevStage: () => void;
   setselectedChannel: any;
 }) => {
-  const channelOptions = channels.map((_channel: any) => ({
-    value: _channel.id,
-    label: _channel.name,
-  }));
+  const [openMenu, setopenMenu] = React.useState(true);
 
   const handleChannelSelect = (value: any) => {
     setselectedChannel(value);
@@ -91,16 +143,19 @@ export const SelectChannel = ({
       <Wrapper>
         <h2 className="select-channel-head">Select Channel</h2>
         <Select
-          options={channelOptions}
+          options={channels}
           onChange={handleChannelSelect}
           placeholder={"Search channel name here"}
           components={{
             Control,
             DropdownIndicator: () => null,
             IndicatorSeparator: () => null,
+            Group,
           }}
           isSearchable
           styles={customSelectStyles}
+          onFocus={() => setopenMenu(true)}
+          menuIsOpen={openMenu}
         />
       </Wrapper>
     </>
