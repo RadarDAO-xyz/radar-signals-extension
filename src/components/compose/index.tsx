@@ -27,9 +27,14 @@ const { channels } = channelData;
 interface PropTypes {
   nextStage: () => void;
   selectedChannel: any;
+  jumpStage: (_stageName: string) => void;
 }
 
-export const Share = ({ nextStage, selectedChannel }: PropTypes) => {
+export const Compose = ({
+  nextStage,
+  selectedChannel,
+  jumpStage,
+}: PropTypes) => {
   const [signalComment, setsignalComment] = React.useState("");
 
   const initialValues: IFormValues = {
@@ -100,7 +105,7 @@ export const Share = ({ nextStage, selectedChannel }: PropTypes) => {
           style={{ display: selectedChannel?.label ? "block" : "none" }}
         >
           <p className="channel-selected-msg">
-            Channel selected{" "}
+            Channel selected
             <img
               src={channelSelectedIcon}
               alt="Done"
@@ -116,6 +121,9 @@ export const Share = ({ nextStage, selectedChannel }: PropTypes) => {
           className="button btn-send"
           type="button"
           disabled={!selectedChannel?.label || !signalComment}
+          onClick={() => {
+            jumpStage("success");
+          }}
         >
           SEND
         </button>

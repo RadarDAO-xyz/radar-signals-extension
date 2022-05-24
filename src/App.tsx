@@ -3,20 +3,27 @@ import styled from "styled-components";
 
 import bg1 from "./assets/images/loginbg.png";
 import bg2 from "./assets/images/bg-image-select-channel.png";
-import radarLogo from "./assets/images/logo.radar.black.svg";
+import bgSuccess from "./assets/images/success-bg.png";
+import radarLogoBlack from "./assets/images/logo.radar.black.svg";
+import radarLogoWhite from "./assets/images/logo.radar.white.svg";
 import backButton from "./assets/images/back.svg";
 import { Home } from "./components/home";
-import { Share } from "./components/share";
+import { Compose } from "./components/compose";
 import { SelectChannel } from "./components/selectchannel";
+import { SuccessPage } from "./components/success";
 import { string } from "yup";
 
 function App() {
   const [selectedChannel, setselectedChannel] = useState<any>({});
   const [stage, setStage] = useState("home");
-  const stages = ["home", "share", "select-channel"];
+  const stages = ["home", "compose", "select-channel", "success"];
 
   const nextStage = () => {
     setStage(stages[(stages.indexOf(stage) + 1) % stages.length]);
+  };
+
+  const jumpStage = (_stageName: string) => {
+    setStage(stages[stages.indexOf(_stageName)]);
   };
 
   const prevStage = () => {
@@ -33,9 +40,13 @@ function App() {
     switch (stage) {
       case "home":
         return <Home nextStage={nextStage} />;
-      case "share":
+      case "compose":
         return (
-          <Share nextStage={nextStage} selectedChannel={selectedChannel} />
+          <Compose
+            nextStage={nextStage}
+            selectedChannel={selectedChannel}
+            jumpStage={jumpStage}
+          />
         );
       case "select-channel":
         return (
@@ -45,6 +56,8 @@ function App() {
             setselectedChannel={setselectedChannel}
           />
         );
+      case "success":
+        return <SuccessPage jumpStage={jumpStage} />;
       default:
         return <Home nextStage={nextStage} />;
     }
@@ -55,7 +68,12 @@ function App() {
       <div
         className="wrapper"
         style={{
-          backgroundImage: stage === "home" ? `url(${bg1})` : `url(${bg2})`,
+          backgroundImage:
+            stage === "home"
+              ? `url(${bg1})`
+              : stage === "success"
+              ? `url(${bgSuccess})`
+              : `url(${bg2})`,
         }}
       >
         <div className="container">
@@ -75,7 +93,11 @@ function App() {
               />
             )}
 
-            <img className="logo" src={radarLogo} alt="RADAR" />
+            <img
+              className="logo"
+              src={stage === "success" ? radarLogoWhite : radarLogoBlack}
+              alt="RADAR"
+            />
             {stage === "home" && (
               <div style={{ fontFamily: "WonderType", fontSize: "20px" }}>
                 THE FUTURE OF FUTURES
@@ -170,6 +192,11 @@ const StyledApp = styled.div`
     text-align: center;
   }
 
+  .btn-send-another:hover {
+    background: url(${bgSuccess});
+    border: 0.903246px solid #000000;
+  }
+
   .button:disabled{
     background: #7C7A7A;
     cursor : not-allowed;
@@ -185,6 +212,96 @@ const StyledApp = styled.div`
   
     }
   }
+  .success-head {
+    font-family:  "MicrogrammaExtdD"!important;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20.7864px;
+    line-height: 27px;
+    text-align: center;
+    color: #000000;
+  }
+
+  .success-message {
+    font-family: 'WonderType';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15.2841px;
+    line-height: 135.5%;
+    text-align: center;
+    text-transform: uppercase;
+    color: #000000;
+  }
+
+  .box-selected {
+    height: 68px !important;
+  }
+  .box-success{
+    height: 184.63px!important;
+  }
+  .selected-channel-value {
+    font-family: "PostGrotesk";
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 19px;
+    color: #000;
+    text-align: center;
+    margin: 2px auto;
+  }
+  .channel-selected-msg {
+    font-family: "PostGrotesk";
+    font-style: normal;
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 24px;
+    margin: 2px auto;
+  }
+  .btn-select {
+    font-family: "PostGrotesk";
+    font-style: normal;
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 24px;
+  }
+  .head {
+    font-family: "PostGrotesk";
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 21px;
+    text-align: center;
+  }
+  .text-area {
+    font-family: "PostGrotesk";
+    font-style: normal;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 19px;
+    padding: 12px 0px 0px 14px;
+    width: 269px;
+    height: 128px;
+    background: #ffffff;
+    border: 0.903246px solid #000000;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+    resize: none;
+    &:active {
+      box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.5);
+    }
+  }
+  .box {
+    background: #fff;
+    padding: 7.15px;
+    border: 0.903246px solid #000000;
+    width: 269px;
+    height: 100px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+    resize: none;
+    margin: 18px 5px 0px 5px;
+    display: "flex";
+    flex-direction: "column";
+  }
+  
 `;
 
 export default App;
