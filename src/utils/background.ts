@@ -3,7 +3,7 @@
 const DISCORD_URI_ENDPOINT = 'https://discord.com/api/oauth2/authorize';
 const CLIENT_ID = encodeURIComponent('977622655626797096');
 const RESPONSE_TYPE = encodeURIComponent('code');
-const REDIRECT_URI = encodeURIComponent('https://pjoopmngclglokjjnphiddknmmpjbknh.chromiumapp.org');
+const REDIRECT_URI = encodeURIComponent('https://fkipongejlaaachjiaipijmmnhcacbca.chromiumapp.org');
 const SCOPE = encodeURIComponent('identify guilds');
 
 function create_auth_endpoint() {
