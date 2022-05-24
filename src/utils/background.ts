@@ -3,7 +3,7 @@
 const DISCORD_URI_ENDPOINT = 'https://discord.com/api/oauth2/authorize';
 const CLIENT_ID = encodeURIComponent('977622655626797096');
 const RESPONSE_TYPE = encodeURIComponent('code');
-const REDIRECT_URI = encodeURIComponent('https://cmffbfaeibinhojfdhdgmbobdjbbjkih.chromiumapp.org');
+const REDIRECT_URI = encodeURIComponent('https://fkipongejlaaachjiaipijmmnhcacbca.chromiumapp.org');
 const SCOPE = encodeURIComponent('identify guilds');
 const BASE_URL = "https://radar-signal-be.herokuapp.com";
 
@@ -16,13 +16,9 @@ function create_auth_endpoint() {
 const getAccessToken = async (code: string) => {
     const response = await fetch(`${BASE_URL}/authorize`, {
         method: 'POST',
-        mode : 'no-cors',
         body: JSON.stringify({
             code
-        }),
-        headers: {
-            'Content-Type': 'application/json'
-        }
+        })
     });
     console.log(response);
     const json = await response.json();
@@ -50,17 +46,16 @@ const submitSignal = async (token:string,signalMessage: string,channelId:string)
 
 
 const getProfile = async (token: string) => {
-    console.log('getting profile', )
     const response = await fetch(`${BASE_URL}/profile`, {
         method: 'GET',
-        mode : 'no-cors',
+        mode: 'cors',
         headers: {
-            'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
         }
     });
     const json = await response.json();
-    console.log(json)
+    console.log(json);
+    // return json
 }
 
 
