@@ -15,6 +15,25 @@ export const Compose = ({
 }: PropTypes) => {
   const [signalComment, setsignalComment] = React.useState("");
 
+  const handleSendSignal = async () => {
+    const token = localStorage.getItem("AUTH_TOKEN");
+    chrome.runtime.sendMessage(
+      {
+        message: "SEND_SIGNAL",
+        token,
+        signalMessage: signalComment,
+        channelId: selectedChannel.value,
+      },
+      function (response) {
+        if (response === "fail") {
+          console.log("signal send failed", response);
+        } else {
+          console.log("signal send response", response);
+          jumpStage("success");
+        }
+      }
+    );
+  };
 
   return (
     <>
@@ -57,7 +76,7 @@ export const Compose = ({
           type="button"
           disabled={!selectedChannel?.label || !signalComment}
           onClick={() => {
-            jumpStage("success");
+            handleSendSignal();
           }}
         >
           SEND

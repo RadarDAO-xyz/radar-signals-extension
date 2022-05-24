@@ -3,8 +3,9 @@
 const DISCORD_URI_ENDPOINT = 'https://discord.com/api/oauth2/authorize';
 const CLIENT_ID = encodeURIComponent('977622655626797096');
 const RESPONSE_TYPE = encodeURIComponent('code');
-const REDIRECT_URI = encodeURIComponent('https://fkipongejlaaachjiaipijmmnhcacbca.chromiumapp.org');
+const REDIRECT_URI = encodeURIComponent('https://cmffbfaeibinhojfdhdgmbobdjbbjkih.chromiumapp.org');
 const SCOPE = encodeURIComponent('identify guilds');
+const BASE_URL = "https://radar-signal-be.herokuapp.com";
 
 function create_auth_endpoint() {
     let nonce = encodeURIComponent(Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15));
@@ -13,9 +14,9 @@ function create_auth_endpoint() {
 }
 
 const getAccessToken = async (code: string) => {
-    const response = await fetch("http://localhost:4000/authorize", {
+    const response = await fetch(`${BASE_URL}/authorize`, {
         method: 'POST',
-        credentials: 'include',
+        mode : 'no-cors',
         body: JSON.stringify({
             code
         }),
@@ -23,16 +24,36 @@ const getAccessToken = async (code: string) => {
             'Content-Type': 'application/json'
         }
     });
+    console.log(response);
+    const json = await response.json();
+    console.log(json);
+    return json;
+}
+
+const submitSignal = async (token:string,signalMessage: string,channelId:string) => {
+    const response = await fetch(`${BASE_URL}/submitSignal`, {
+        method: 'POST',
+        mode : 'no-cors',
+        body: JSON.stringify({
+            message:signalMessage,
+            channelId
+        }),
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    });
 
     const json = await response.json();
-    return json
+    return json;
 }
+
 
 const getProfile = async (token: string) => {
     console.log('getting profile', )
-    const response = await fetch("http://localhost:4000/profile", {
+    const response = await fetch(`${BASE_URL}/profile`, {
         method: 'GET',
-        credentials: 'include',
+        mode : 'no-cors',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
@@ -55,6 +76,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                 sendResponse('fail');
             } else {
                 const code = redirect_uri!.split('=')[1];
+                console.log("code",code);
                 getAccessToken(code).then(json => {
                     console.log(json);
                     if(json) {
@@ -80,6 +102,18 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             sendResponse('fail');
         });
         return true;
+    }
+
+    if (request.message === 'SEND_SIGNAL') { 
+        submitSignal(request.token,request.signalMessage,request.channelId).then(json=>{
+            console.log(json);
+            sendResponse('success');
+        }).catch(err => {
+            console.log(err);
+            sendResponse('fail');
+        });
+        return true;
+
     }
 });
 
