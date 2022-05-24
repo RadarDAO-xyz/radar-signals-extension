@@ -1,28 +1,6 @@
-import React, { FC, ReactFragment, ReactPortal } from "react";
+import React from "react";
 import styled from "styled-components";
-import channelData from "../../data/.test.channels.json";
 import channelSelectedIcon from "../../assets/images/channelSelectedIcon.svg";
-import { channel } from "diagnostics_channel";
-
-// interface IRadarChannelItem {
-//   name: string;
-//   category: string;
-//   id: string;
-//   webhook: string; //URL;
-// }
-
-// interface IRadarChannels {
-//   channels: IRadarChannelItem[];
-// }
-interface IFormValues {
-  username: string;
-  url: string;
-  comment: string;
-  radarChannel: string;
-  date: string;
-}
-
-const { channels } = channelData;
 
 interface PropTypes {
   nextStage: () => void;
@@ -37,49 +15,6 @@ export const Compose = ({
 }: PropTypes) => {
   const [signalComment, setsignalComment] = React.useState("");
 
-  const initialValues: IFormValues = {
-    username: "",
-    url: "",
-    radarChannel: "", // channels: [], // Question: can you post to multiple channels?
-    comment: "",
-    date: `${new Date()}`,
-  };
-
-  const sendFormDataHook = (formData: {
-    username: string;
-    url: string;
-    comment: string;
-    date: string;
-    name: string;
-    category: string;
-    id: string;
-    webhook: string;
-  }) => {
-    const { username, url, comment, date, name, category, id, webhook } =
-      formData;
-
-    function listener(this: any) {
-      console.log("Web Hook Repsonse", this.responseText);
-    }
-    const xhrRequest = new XMLHttpRequest();
-    xhrRequest.addEventListener("load", listener);
-    xhrRequest.open("POST", webhook);
-    xhrRequest.setRequestHeader(
-      "Content-Type",
-      "application/json;charset=UTF-8"
-    );
-    xhrRequest.send(
-      JSON.stringify({
-        username: username,
-        avatar_url: "",
-        content: `URL: ${url}\n\nComment: ${comment}\n\nDate: ${date}`,
-      })
-    );
-  };
-
-  const renderError = (
-    message: boolean | ReactFragment | ReactPortal | null | undefined
-  ) => <p className="help is-danger">{message}</p>;
 
   return (
     <>

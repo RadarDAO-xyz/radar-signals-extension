@@ -1,4 +1,4 @@
-import React, { FC, ReactFragment, ReactPortal } from "react";
+import React from "react";
 import styled from "styled-components";
 import Select, {
   components,
@@ -8,25 +8,7 @@ import Select, {
   GroupBase,
 } from "react-select";
 import channelData from "../../data/.test.channels.json";
-import { channel } from "diagnostics_channel";
 
-// interface IRadarChannelItem {
-//   name: string;
-//   category: string;
-//   id: string;
-//   webhook: string; //URL;
-// }
-
-// interface IRadarChannels {
-//   channels: IRadarChannelItem[];
-// }
-interface IFormValues {
-  username: string;
-  url: string;
-  comment: string;
-  radarChannel: string;
-  date: string;
-}
 
 const { channels } = channelData;
 
