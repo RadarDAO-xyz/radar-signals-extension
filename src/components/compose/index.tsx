@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import channelSelectedIcon from "../../assets/images/channelSelectedIcon.svg";
 
@@ -14,7 +14,34 @@ export const Compose = ({
   jumpStage,
 }: PropTypes) => {
   const [signalComment, setsignalComment] = React.useState("");
+  const [user, setUser] = React.useState<any>(null);
 
+  const handleSendSignal = async () => {
+    const token = localStorage.getItem("AUTH_TOKEN");
+
+    chrome.runtime.sendMessage(
+      {
+        message: "SEND_SIGNAL",
+        token,
+        signalMessage: signalComment,
+        channelId: selectedChannel.value,
+        url: window.location.href
+      },
+      function (response) {
+        if (response === "fail") {
+          console.log("signal send failed", response);
+        } else {
+          console.log("signal send response", response);
+          jumpStage("success");
+        }
+      }
+    );
+  };
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("AUTH_USER")) || null;
+    setUser(user)
+  }, [])
 
   return (
     <>
@@ -57,11 +84,17 @@ export const Compose = ({
           type="button"
           disabled={!selectedChannel?.label || !signalComment}
           onClick={() => {
-            jumpStage("success");
+            handleSendSignal();
           }}
         >
           SEND
         </button>
+        <div className="user">
+          <img src={user?.avatar} alt="Discord Profile Avatar"/>
+          <p>
+          {user?.username}
+          </p>
+        </div>
       </Wrapper>
     </>
   );
@@ -133,5 +166,23 @@ const Wrapper = styled.div`
     margin: 18px 5px 0px 5px;
     display: "flex";
     flex-direction: "column";
+  }
+  .user {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 8px;
+    img {
+      width: 27px;
+      height: 27px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+    p {
+      font-family: "PostGrotesk";
+      font-style: bold;
+      font-weight: 900;
+      font-size: 16px;
+    }
   }
 `;

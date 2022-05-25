@@ -1,9 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 
 import bg1 from "./assets/images/loginbg.png";
 import bg2 from "./assets/images/bg-image-select-channel.png";
 import bgSuccess from "./assets/images/success-bg.png";
+import sendAnother from "./assets/images/Send_button.png";
+import loaderGif from "./assets/images/loader.gif";
+
+
 import radarLogoBlack from "./assets/images/logo.radar.black.svg";
 import radarLogoWhite from "./assets/images/logo.radar.white.svg";
 import backButton from "./assets/images/back.svg";
@@ -11,12 +15,12 @@ import { Home } from "./components/home";
 import { Compose } from "./components/compose";
 import { SelectChannel } from "./components/selectchannel";
 import { SuccessPage } from "./components/success";
-import { string } from "yup";
 
 function App() {
   const [selectedChannel, setselectedChannel] = useState<any>({});
   const [stage, setStage] = useState("home");
   const stages = ["home", "compose", "select-channel", "success"];
+  const [loading, setLoading] = useState(false);
 
   const nextStage = () => {
     setStage(stages[(stages.indexOf(stage) + 1) % stages.length]);
@@ -63,6 +67,30 @@ function App() {
     }
   };
 
+  useEffect(() => {
+    const token = localStorage.getItem("AUTH_TOKEN");
+    if (token) {
+      setLoading(true);
+      chrome.runtime.sendMessage(
+        { message: "AUTHENTICATE", token },
+        function (response) {
+          setLoading(false);
+          if (response.type === "success") {
+            localStorage.setItem("AUTH_USER", JSON.stringify({
+              username: response.data.username,
+              avatar: response.data.avatar,
+              channels: response.data.channels,
+            }));
+            nextStage();
+          } else {
+            setStage("home");
+            console.log("login failed", response);
+          }
+        }
+      );
+    }
+  }, []);
+
   return (
     <StyledApp>
       <div
@@ -76,7 +104,11 @@ function App() {
               : `url(${bg2})`,
         }}
       >
-        <div className="container">
+        {
+          loading ? (<div className="loader">
+            <img src={loaderGif} alt="radar logo" />
+          </div>) : (
+            <div className="container">
           <div className="title">
             {stage === "select-channel" && (
               <img
@@ -106,6 +138,8 @@ function App() {
           </div>
           {renderStage()}
         </div>
+          )
+        }
       </div>
     </StyledApp>
   );
@@ -193,7 +227,7 @@ const StyledApp = styled.div`
   }
 
   .btn-send-another:hover {
-    background: url(${bgSuccess});
+    background: url(${sendAnother});
     border: 0.903246px solid #000000;
   }
 
@@ -300,6 +334,18 @@ const StyledApp = styled.div`
     margin: 18px 5px 0px 5px;
     display: "flex";
     flex-direction: "column";
+  }
+
+  .loader {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    img {
+      width: 60px;
+      height: 60px;
+    }
   }
   
 `;
