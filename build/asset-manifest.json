@@ -16,6 +16,7 @@
     "static/media/channelSelectedIcon.svg": "/static/media/channelSelectedIcon.add0d8455db9b3191be392d3658a363d.svg",
     "main.js.map": "/static/js/main.js.map",
     "background.js.map": "/static/js/background.js.map",
+    "content.js.map": "/static/js/content.js.map",
     "787.b4cf1908.chunk.js.map": "/static/js/787.b4cf1908.chunk.js.map"
   },
   "entrypoints": [
