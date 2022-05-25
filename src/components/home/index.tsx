@@ -13,7 +13,16 @@ export const Home = ({ nextStage }: { nextStage: () => void }) => {
         { message: "AUTHENTICATE", token },
         function (response) {
           setLoading(false);
-          nextStage();
+          if (response.type === "success") {
+            localStorage.setItem("AUTH_USER", JSON.stringify({
+              username: response.data.username,
+              avatar: response.data.avatar,
+              channels: response.data.channels,
+            }));
+            nextStage();
+          } else {
+            console.log("login failed", response);
+          }
         }
       );
     }
@@ -23,12 +32,15 @@ export const Home = ({ nextStage }: { nextStage: () => void }) => {
     setAuthorization(true);
     chrome.runtime.sendMessage({ message: "LOGIN" }, function (response) {
       setAuthorization(false);
-      if (response === "fail") {
-        console.log("login failed", response);
-      } else {
-        console.log("login response", response);
-        localStorage.setItem("AUTH_TOKEN", response.token);
+      if (response.type === "success") {
+        localStorage.setItem("AUTH_TOKEN", response.data.token);
+        localStorage.setItem("AUTH_USER", JSON.stringify({
+          username: response.data.username,
+          avatar: response.data.avatar,
+        }));
         nextStage();
+      } else {
+        console.log("login failed", response);
       }
     });
   };

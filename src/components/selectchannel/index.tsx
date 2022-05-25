@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import Select, {
   components,
@@ -7,10 +7,7 @@ import Select, {
   StylesConfig,
   GroupBase,
 } from "react-select";
-import channelData from "../../data/.test.channels.json";
 
-
-const { channels } = channelData;
 
 const customSelectStyles: StylesConfig<unknown, boolean, GroupBase<unknown>> = {
   input: (styles) => ({
@@ -115,17 +112,27 @@ export const SelectChannel = ({
   setselectedChannel: any;
 }) => {
   const [openMenu, setopenMenu] = React.useState(true);
+  const [channels, setChannels] = React.useState<any>(null);
 
   const handleChannelSelect = (value: any) => {
     setselectedChannel(value);
     prevStage();
   };
+
+  useEffect(() => {
+    const user= JSON.parse(localStorage.getItem("AUTH_USER")) || null;
+    const _channels = user?.channels || null;
+    const list = _channels?.map((channel: any) => ({ label: channel.name, value: channel.id }));
+    setChannels(list);
+    console.log(user?.channels)
+  }, [])
+
   return (
     <>
       <Wrapper>
         <h2 className="select-channel-head">Select Channel</h2>
         <Select
-          options={channels}
+          options={channels || []}
           onChange={handleChannelSelect}
           placeholder={"Search channel name here"}
           components={{

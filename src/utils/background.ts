@@ -1,5 +1,4 @@
 
-
 const DISCORD_URI_ENDPOINT = 'https://discord.com/api/oauth2/authorize';
 const CLIENT_ID = encodeURIComponent('977622655626797096');
 const RESPONSE_TYPE = encodeURIComponent('code');
@@ -18,7 +17,13 @@ const getAccessToken = async (code: string) => {
         method: 'POST',
         body: JSON.stringify({
             code
-        })
+        }),
+        mode: "cors", 
+        'credentials': 'include',
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json',
+        }
     });
     console.log(response);
     const json = await response.json();
@@ -26,17 +31,20 @@ const getAccessToken = async (code: string) => {
     return json;
 }
 
-const submitSignal = async (token:string,signalMessage: string,channelId:string) => {
+const submitSignal = async (token:string, signalMessage: string, channelId:string) => {
+    console.log(signalMessage, channelId)
     const response = await fetch(`${BASE_URL}/submitSignal`, {
         method: 'POST',
-        mode : 'no-cors',
         body: JSON.stringify({
-            message:signalMessage,
+            message: signalMessage,
             channelId
         }),
+        mode: "cors", 
+        'credentials': 'include',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${token}`,
+            'Access-Control-Allow-Origin': '*'
         }
     });
 
@@ -48,14 +56,16 @@ const submitSignal = async (token:string,signalMessage: string,channelId:string)
 const getProfile = async (token: string) => {
     const response = await fetch(`${BASE_URL}/profile`, {
         method: 'GET',
-        mode: 'cors',
+        'credentials': 'include',
+        mode: "cors",      
         headers: {
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${token}`,
+            'Access-Control-Allow-Origin': '*'
         }
     });
     const json = await response.json();
     console.log(json);
-    // return json
+    return json
 }
 
 
@@ -71,13 +81,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                 sendResponse('fail');
             } else {
                 const code = redirect_uri!.split('=')[1];
-                console.log("code",code);
                 getAccessToken(code).then(json => {
                     console.log(json);
                     if(json) {
-                        sendResponse(json);
+                        sendResponse({ type: "success", data: json });
                     }else {
-                        sendResponse('fail');
+                        sendResponse({type: 'failed' });
                     }
                 }).catch(err => {
                     console.log(err);
@@ -91,10 +100,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if(request.message === 'AUTHENTICATE') {
         getProfile(request.token).then(json => {
             console.log(json);
-            sendResponse('success');
+            sendResponse({ type: "success", data: json });
         }).catch(err => {
             console.log(err);
-            sendResponse('fail');
+            sendResponse({type: 'failed' });
         });
         return true;
     }
