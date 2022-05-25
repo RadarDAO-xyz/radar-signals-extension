@@ -94,6 +94,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                     console.log(json);
                     if(json) {
                         sendResponse({ type: "success", data: json });
+                        chrome.storage.local.set({
+                            token: json.token
+                        });
                     }else {
                         sendResponse({type: 'failed' });
                     }
