@@ -37,6 +37,7 @@ export const Home = ({ nextStage }: { nextStage: () => void }) => {
         localStorage.setItem("AUTH_USER", JSON.stringify({
           username: response.data.username,
           avatar: response.data.avatar,
+          channels: response.data.channels,
         }));
         nextStage();
       } else {

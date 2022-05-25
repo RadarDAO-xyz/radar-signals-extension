@@ -25,6 +25,7 @@ export const Compose = ({
         token,
         signalMessage: signalComment,
         channelId: selectedChannel.value,
+        url: window.location.href
       },
       function (response) {
         if (response === "fail") {

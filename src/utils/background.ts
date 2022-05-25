@@ -31,13 +31,21 @@ const getAccessToken = async (code: string) => {
     return json;
 }
 
-const submitSignal = async (token:string, signalMessage: string, channelId:string) => {
+const submitSignal = async (token:string, signalMessage: string, channelId:string, url: string) => {
     console.log(signalMessage, channelId)
+    chrome.tabs.query({
+        active: true,
+        currentWindow: true
+      }, async function(tabs) {
+        var tab = tabs[0];
+        var fiurl = tab.url;
+
     const response = await fetch(`${BASE_URL}/submitSignal`, {
         method: 'POST',
         body: JSON.stringify({
-            message: signalMessage,
-            channelId
+            message: `${signalMessage}`,
+            channelId,
+            url: fiurl
         }),
         mode: "cors", 
         'credentials': 'include',
@@ -50,6 +58,7 @@ const submitSignal = async (token:string, signalMessage: string, channelId:strin
 
     const json = await response.json();
     return json;
+});
 }
 
 
@@ -109,7 +118,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     }
 
     if (request.message === 'SEND_SIGNAL') { 
-        submitSignal(request.token,request.signalMessage,request.channelId).then(json=>{
+        submitSignal(request.token,request.signalMessage,request.channelId, request.url).then(json=>{
             console.log(json);
             sendResponse('success');
         }).catch(err => {
