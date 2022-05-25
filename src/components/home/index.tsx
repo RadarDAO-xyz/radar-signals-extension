@@ -4,7 +4,6 @@ import styled from "styled-components";
 export const Home = ({ nextStage }: { nextStage: () => void }) => {
   const [authorizing, setAuthorization] = useState(false);
 
-
   const handleDiscordLogin = async () => {
     setAuthorization(true);
     // window.postMessage({ type: "LOGIN" });

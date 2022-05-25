@@ -8,7 +8,6 @@ import Select, {
   GroupBase,
 } from "react-select";
 
-
 const customSelectStyles: StylesConfig<unknown, boolean, GroupBase<unknown>> = {
   input: (styles) => ({
     ...styles,
@@ -43,6 +42,7 @@ const customSelectStyles: StylesConfig<unknown, boolean, GroupBase<unknown>> = {
     ...styles,
     background: "#FFF",
     textAlign: "left",
+    paddingLeft: "28px",
     ":hover": {
       background: "#8F00FF",
       color: "#fff",
@@ -119,20 +119,52 @@ export const SelectChannel = ({
     prevStage();
   };
 
+  const fallBackOptions = [
+    {
+      label: "Category1",
+      options: [
+        {
+          label: "Channel1",
+          value: "Channel1",
+        },
+        {
+          label: "Channel2",
+          value: "Channel2",
+        },
+      ],
+    },
+    {
+      label: "Category2",
+      options: [
+        {
+          label: "Channel1",
+          value: "Channel1",
+        },
+        {
+          label: "Channel2",
+          value: "Channel2",
+        },
+      ],
+    },
+  ];
+
   useEffect(() => {
-    const user= JSON.parse(localStorage.getItem("AUTH_USER")) || null;
+    const user = JSON.parse(localStorage.getItem("AUTH_USER")) || null;
     const _channels = user?.channels || null;
-    const list = _channels?.map((channel: any) => ({ label: channel.name, value: channel.id }));
+    const list = _channels?.map((channel: any) => ({
+      label: channel.name,
+      value: channel.id,
+    }));
     setChannels(list);
-    console.log(user?.channels)
-  }, [])
+    console.log(user?.channels);
+  }, []);
 
   return (
     <>
       <Wrapper>
         <h2 className="select-channel-head">Select Channel</h2>
         <Select
-          options={channels || []}
+          options={channels || fallBackOptions}
           onChange={handleChannelSelect}
           placeholder={"Search channel name here"}
           components={{

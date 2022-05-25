@@ -7,7 +7,6 @@ import bgSuccess from "./assets/images/success-bg.png";
 import sendAnother from "./assets/images/Send_button.png";
 import loaderGif from "./assets/images/loader.gif";
 
-
 import radarLogoBlack from "./assets/images/logo.radar.black.svg";
 import radarLogoWhite from "./assets/images/logo.radar.white.svg";
 import backButton from "./assets/images/back.svg";
@@ -18,6 +17,7 @@ import { SuccessPage } from "./components/success";
 
 function App() {
   const [selectedChannel, setselectedChannel] = useState<any>({});
+  const [signalComment, setsignalComment] = useState<string>("");
   const [stage, setStage] = useState("home");
   const stages = ["home", "compose", "select-channel", "success"];
   const [loading, setLoading] = useState(false);
@@ -50,6 +50,8 @@ function App() {
             nextStage={nextStage}
             selectedChannel={selectedChannel}
             jumpStage={jumpStage}
+            signalComment={signalComment}
+            setsignalComment={setsignalComment}
           />
         );
       case "select-channel":
@@ -76,11 +78,14 @@ function App() {
         function (response) {
           setLoading(false);
           if (response.type === "success") {
-            localStorage.setItem("AUTH_USER", JSON.stringify({
-              username: response.data.username,
-              avatar: response.data.avatar,
-              channels: response.data.channels,
-            }));
+            localStorage.setItem(
+              "AUTH_USER",
+              JSON.stringify({
+                username: response.data.username,
+                avatar: response.data.avatar,
+                channels: response.data.channels,
+              })
+            );
             nextStage();
           } else {
             setStage("home");
@@ -104,42 +109,42 @@ function App() {
               : `url(${bg2})`,
         }}
       >
-        {
-          loading ? (<div className="loader">
+        {loading ? (
+          <div className="loader">
             <img src={loaderGif} alt="radar logo" />
-          </div>) : (
-            <div className="container">
-          <div className="title">
-            {stage === "select-channel" && (
+          </div>
+        ) : (
+          <div className="container">
+            <div className="title">
+              {stage === "select-channel" && (
+                <img
+                  className="logo"
+                  src={backButton}
+                  alt="back"
+                  style={{
+                    height: "14px",
+                    width: "14px",
+                    float: "left",
+                    cursor: "pointer",
+                  }}
+                  onClick={prevStage}
+                />
+              )}
+
               <img
                 className="logo"
-                src={backButton}
-                alt="back"
-                style={{
-                  height: "14px",
-                  width: "14px",
-                  float: "left",
-                  cursor: "pointer",
-                }}
-                onClick={prevStage}
+                src={stage === "success" ? radarLogoWhite : radarLogoBlack}
+                alt="RADAR"
               />
-            )}
-
-            <img
-              className="logo"
-              src={stage === "success" ? radarLogoWhite : radarLogoBlack}
-              alt="RADAR"
-            />
-            {stage === "home" && (
-              <div style={{ fontFamily: "WonderType", fontSize: "20px" }}>
-                THE FUTURE OF FUTURES
-              </div>
-            )}
+              {stage === "home" && (
+                <div style={{ fontFamily: "WonderType", fontSize: "20px" }}>
+                  THE FUTURE OF FUTURES
+                </div>
+              )}
+            </div>
+            {renderStage()}
           </div>
-          {renderStage()}
-        </div>
-          )
-        }
+        )}
       </div>
     </StyledApp>
   );
@@ -159,7 +164,7 @@ const StyledApp = styled.div`
     src: url("/assets/fonts/MicrogrammaExtdD.otf");
   }
 
-  width: 350px;
+  width: 321px;
   height: 500px;
   margin: 0 auto;
 

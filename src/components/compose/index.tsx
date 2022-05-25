@@ -6,14 +6,17 @@ interface PropTypes {
   nextStage: () => void;
   selectedChannel: any;
   jumpStage: (_stageName: string) => void;
+  signalComment: string;
+  setsignalComment: any;
 }
 
 export const Compose = ({
   nextStage,
   selectedChannel,
   jumpStage,
+  signalComment,
+  setsignalComment,
 }: PropTypes) => {
-  const [signalComment, setsignalComment] = React.useState("");
   const [user, setUser] = React.useState<any>(null);
 
   const handleSendSignal = async () => {
@@ -25,7 +28,7 @@ export const Compose = ({
         token,
         signalMessage: signalComment,
         channelId: selectedChannel.value,
-        url: window.location.href
+        url: window.location.href,
       },
       function (response) {
         if (response === "fail") {
@@ -40,8 +43,8 @@ export const Compose = ({
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("AUTH_USER")) || null;
-    setUser(user)
-  }, [])
+    setUser(user);
+  }, []);
 
   return (
     <>
@@ -50,6 +53,7 @@ export const Compose = ({
         <textarea
           className="text-area"
           placeholder="Write a comment..."
+          value={signalComment}
           onChange={(e) => setsignalComment(e.target.value)}
         />
         <div style={{ display: selectedChannel?.label ? "none" : "block" }}>
@@ -90,10 +94,8 @@ export const Compose = ({
           SEND
         </button>
         <div className="user">
-          <img src={user?.avatar} alt="Discord Profile Avatar"/>
-          <p>
-          {user?.username}
-          </p>
+          <img src={user?.avatar} alt="Discord Profile Avatar" />
+          <p>{user?.username}</p>
         </div>
       </Wrapper>
     </>
