@@ -1,6 +1,6 @@
 {
   "name": "radar-signals-extension",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "dependencies": {
     "@craco/craco": "^6.4.3",
@@ -53,6 +53,20 @@
       "name": "LeslieOA",
       "email": "leslie@localhost.international",
       "url": "https://github.com/leslieoa"
+    },
+    {
+      "name": "Timi Tejumola",
+      "email": "tejumoladavid@gmail.com",
+      "url": "https://github.com/timi-codes"
+    },
+    {
+      "name": "Shivam Vishwakarma",
+      "url": "https://shivvam.github.io"
+    },
+    {
+      "name": "Tal Ben Shoam",
+      "email": "tejumoladavid@gmail.com",
+      "url": "https://github.com/timi-codes"
     }
   ],
   "description": "Chrome Extension for sharing Signals out in the wild",
