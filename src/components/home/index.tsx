@@ -24,7 +24,6 @@ const getAccessToken = async (redirect_uri: string) => {
 export const Home = ({ nextStage }: { nextStage: () => void }) => {
   const [authorizing, setAuthorization] = useState(false);
 
-
   const handleDiscordLogin = async () => {
     setAuthorization(true);
     chrome.runtime.sendMessage({ message: "LOGIN" }, function (response) {
