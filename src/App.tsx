@@ -16,11 +16,13 @@ import { Compose } from "./components/compose";
 import { SelectChannel } from "./components/selectchannel";
 import { SuccessPage } from "./components/success";
 
+
 function App() {
   const [selectedChannel, setselectedChannel] = useState<any>({});
   const [stage, setStage] = useState("home");
   const stages = ["home", "compose", "select-channel", "success"];
   const [loading, setLoading] = useState(false);
+  const [token, _] = useState(localStorage.getItem("AUTH_TOKEN"));
 
   const nextStage = () => {
     setStage(stages[(stages.indexOf(stage) + 1) % stages.length]);
@@ -68,8 +70,7 @@ function App() {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("AUTH_TOKEN");
-    if (token) {
+    if (token === "") {
       setLoading(true);
       chrome.runtime.sendMessage(
         { message: "AUTHENTICATE", token },
@@ -81,7 +82,7 @@ function App() {
               avatar: response.data.avatar,
               channels: response.data.channels,
             }));
-            nextStage();
+            setStage("compose");
           } else {
             setStage("home");
             console.log("login failed", response);
@@ -89,7 +90,7 @@ function App() {
         }
       );
     }
-  }, []);
+  }, [token]);
 
   return (
     <StyledApp>

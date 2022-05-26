@@ -1,6 +1,25 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styled from "styled-components";
-import { createTextSpanFromBounds } from "typescript";
+const BASE_URL = "https://radar-signal-be.herokuapp.com";
+
+const getAccessToken = async (redirect_uri: string) => {
+  const response = await fetch(`${BASE_URL}/authorize`, {
+      method: 'POST',
+      body: JSON.stringify({
+          redirect_uri
+      }),
+      mode: "cors", 
+      'credentials': 'include',
+      headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json',
+      }
+  });
+  console.log(response);
+  const json = await response.json();
+  console.log(json);
+  return json;
+}
 
 export const Home = ({ nextStage }: { nextStage: () => void }) => {
   const [authorizing, setAuthorization] = useState(false);
@@ -8,25 +27,29 @@ export const Home = ({ nextStage }: { nextStage: () => void }) => {
 
   const handleDiscordLogin = async () => {
     setAuthorization(true);
-    // window.postMessage({ type: "LOGIN" });
-    // chrome.runtime.sendMessage({ message: "LOGIN" }, function (response) {
-    //   setAuthorization(false);
-    //   if (response.type === "success") {
-    //     nextStage();
-    //     localStorage.setItem("AUTH_TOKEN", response.data.token);
-    //     localStorage.setItem("AUTH_USER", JSON.stringify({
-    //       username: response.data.username,
-    //       avatar: response.data.avatar,
-    //       channels: response.data.channels,
-    //     }));
-    //   } else {
-    //     console.log("login failed", response);
-    //   }
-    // });
-    chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
-      chrome.tabs.connect(tabs[0].id || 0, { name: "content" });
+    chrome.runtime.sendMessage({ message: "LOGIN" }, function (response) {
+      const  redirect_uri= response.redirect_uri;
+      console.log(redirect_uri);
+      if (chrome.runtime.lastError || redirect_uri?.includes('access_denied')) {
+        console.log("Could not authenticate.");
+    } else {
+      getAccessToken(redirect_uri).then(json => {
+        if(json) {
+          localStorage.setItem("AUTH_TOKEN", json.token);
+          localStorage.setItem("AUTH_USER", JSON.stringify({
+            username: json.username,
+            avatar: json.avatar,
+            channels: json.channels,
+          }));
+          nextStage();
+        }else {
+          console.log("Could not get token.");
+        }
+      }).catch(err => {
+          console.log(err);
+      });
+    }
     });
-    // window.postMessage({ type: "FROM_PAGE", text: "Hello from the webpage!" }, "*");
   };
 
   return (

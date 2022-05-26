@@ -2,7 +2,6 @@
   "files": {
     "main.js": "/static/js/main.js",
     "background.js": "/static/js/background.js",
-    "content.js": "/static/js/content.js",
     "static/js/787.b4cf1908.chunk.js": "/static/js/787.b4cf1908.chunk.js",
     "static/media/loginbg.png": "/static/media/loginbg.8c9fadf19528535b7032.png",
     "static/media/success-bg.png": "/static/media/success-bg.e8cdbeda7db5dbe782ea.png",
@@ -16,7 +15,6 @@
     "static/media/channelSelectedIcon.svg": "/static/media/channelSelectedIcon.add0d8455db9b3191be392d3658a363d.svg",
     "main.js.map": "/static/js/main.js.map",
     "background.js.map": "/static/js/background.js.map",
-    "content.js.map": "/static/js/content.js.map",
     "787.b4cf1908.chunk.js.map": "/static/js/787.b4cf1908.chunk.js.map"
   },
   "entrypoints": [
