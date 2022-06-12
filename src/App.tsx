@@ -95,56 +95,67 @@ function App() {
   }, [token]);
 
   return (
-    <StyledApp>
-      <div
-        className="wrapper"
-        style={{
-          backgroundImage:
-            stage === "home"
-              ? `url(${bg1})`
-              : stage === "success"
-              ? `url(${bgSuccess})`
-              : `url(${bg2})`,
-        }}
-      >
-        {loading ? (
-          <div className="loader">
-            <img src={loaderGif} alt="radar logo" />
-          </div>
-        ) : (
-          <div className="container">
-            <div className="title">
-              {stage === "select-channel" && (
-                <img
-                  className="logo"
-                  src={backButton}
-                  alt="back"
-                  style={{
-                    height: "14px",
-                    width: "14px",
-                    float: "left",
-                    cursor: "pointer",
-                  }}
-                  onClick={prevStage}
-                />
-              )}
-
-              <img
-                className="logo"
-                src={stage === "success" ? radarLogoWhite : radarLogoBlack}
-                alt="RADAR"
-              />
-              {stage === "home" && (
-                <div style={{ fontFamily: "WonderType", fontSize: "20px" }}>
-                  THE FUTURE OF FUTURES
+    <>
+      {/* {
+        Boolean(token) && token ?  (
+          <StyledApp>
+          <div
+            className="wrapper"
+            style={{
+              backgroundImage:
+                stage === "home"
+                  ? `url(${bg1})`
+                  : stage === "success"
+                  ? `url(${bgSuccess})`
+                  : `url(${bg2})`,
+            }}
+          >
+            {loading ? (
+              <div className="loader">
+                <img src={loaderGif} alt="radar logo" />
+              </div>
+            ) : (
+              <div className="container">
+                <div className="title">
+                  {stage === "select-channel" && (
+                    <img
+                      className="logo"
+                      src={backButton}
+                      alt="back"
+                      style={{
+                        height: "14px",
+                        width: "14px",
+                        float: "left",
+                        cursor: "pointer",
+                      }}
+                      onClick={prevStage}
+                    />
+                  )}
+    
+                  <img
+                    className="logo"
+                    src={stage === "success" ? radarLogoWhite : radarLogoBlack}
+                    alt="RADAR"
+                  />
+                  {stage === "home" && (
+                    <div style={{ fontFamily: "WonderType", fontSize: "20px" }}>
+                      THE FUTURE OF FUTURES
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-            {renderStage()}
+                {renderStage()}
+              </div>
+            )}
           </div>
-        )}
-      </div>
-    </StyledApp>
+          </StyledApp>
+        ) : (
+          <> */}
+            <Home/>
+          {/* </>
+        )
+      } */}
+    </>
+
   );
 }
 
@@ -162,8 +173,8 @@ const StyledApp = styled.div`
     src: url("/assets/fonts/MicrogrammaExtdD.otf");
   }
 
-  width: 321px;
-  height: 500px;
+  width: 100%;
+  height: 100vh;
   margin: 0 auto;
 
   .title {
@@ -244,9 +255,7 @@ const StyledApp = styled.div`
     padding: 20px;
     height: 100%;
     text-align: center;
-    width: 320px;
-   
-  
+    width: 100%;
     }
   }
   .success-head {

@@ -23,7 +23,7 @@ const getAccessToken = async (redirect_uri: string) => {
   return json;
 }
 
-export const Home = ({ nextStage }: { nextStage: () => void }) => {
+export const AuthPage = ({ nextStage }: { nextStage: () => void }) => {
   const [authorizing, setAuthorization] = useState(false);
 
   const handleDiscordLogin = async () => {
@@ -101,7 +101,6 @@ export const Home = ({ nextStage }: { nextStage: () => void }) => {
   );
 };
 
-// TODO - Move to ./style as SC
 const Wrapper = styled.div`
   @font-face {
     font-family: "WonderType";
