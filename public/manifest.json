@@ -13,5 +13,5 @@
     "service_worker": "./static/js/background.js"
   },
   "host_permissions": ["https://radar-signal-be.herokuapp.com/*"],
-  "permissions": ["identity", "tabs", "activeTab"]
+  "permissions": ["identity", "tabs", "activeTab", "storage"]
 }

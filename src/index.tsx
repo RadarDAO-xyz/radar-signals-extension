@@ -2,12 +2,26 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { GlobalStyle } from "./style/global";
 import App from "./App";
+import AuthPage from "./components/auth";
 import reportWebVitals from "./reportWebVitals";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+
 root.render(
+  <React.StrictMode>
+    <GlobalStyle />
+    <AuthPage />
+  </React.StrictMode>
+);
+
+
+const main = ReactDOM.createRoot(
+  document.getElementById("main") as HTMLElement
+);
+
+main.render(
   <React.StrictMode>
     <GlobalStyle />
     <App />

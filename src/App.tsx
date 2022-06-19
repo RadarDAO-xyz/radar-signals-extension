@@ -10,7 +10,7 @@ import loaderGif from "./assets/images/loader.gif";
 import radarLogoBlack from "./assets/images/logo.radar.black.svg";
 import radarLogoWhite from "./assets/images/logo.radar.white.svg";
 import backButton from "./assets/images/back.svg";
-import { Home } from "./components/home";
+import Auth from "./components/auth";
 import { Compose } from "./components/compose";
 import { SelectChannel } from "./components/selectchannel";
 import { SuccessPage } from "./components/success";
@@ -42,57 +42,57 @@ function App() {
     );
   };
 
-  const renderStage = () => {
-    switch (stage) {
-      case "home":
-        return <Home nextStage={nextStage} />;
-      case "compose":
-        return (
-          <Compose
-            nextStage={nextStage}
-            selectedChannel={selectedChannel}
-            jumpStage={jumpStage}
-            signalComment={signalComment}
-            setsignalComment={setsignalComment}
-          />
-        );
-      case "select-channel":
-        return (
-          <SelectChannel
-            nextStage={nextStage}
-            prevStage={prevStage}
-            setselectedChannel={setselectedChannel}
-          />
-        );
-      case "success":
-        return <SuccessPage jumpStage={jumpStage} />;
-      default:
-        return <Home nextStage={nextStage} />;
-    }
-  };
+  // const renderStage = () => {
+  //   switch (stage) {
+  //     case "home":
+  //       return <Home nextStage={nextStage} />;
+  //     case "compose":
+  //       return (
+  //         <Compose
+  //           nextStage={nextStage}
+  //           selectedChannel={selectedChannel}
+  //           jumpStage={jumpStage}
+  //           signalComment={signalComment}
+  //           setsignalComment={setsignalComment}
+  //         />
+  //       );
+  //     case "select-channel":
+  //       return (
+  //         <SelectChannel
+  //           nextStage={nextStage}
+  //           prevStage={prevStage}
+  //           setselectedChannel={setselectedChannel}
+  //         />
+  //       );
+  //     case "success":
+  //       return <SuccessPage jumpStage={jumpStage} />;
+  //     default:
+  //       return <Home nextStage={nextStage} />;
+  //   }
+  // };
 
-  useEffect(() => {
-    if (token === "") {
-      setLoading(true);
-      chrome.runtime.sendMessage(
-        { message: "AUTHENTICATE", token },
-        function (response) {
-          setLoading(false);
-          if (response.type === "success") {
-            localStorage.setItem("AUTH_USER", JSON.stringify({
-              username: response.data.username,
-              avatar: response.data.avatar,
-              channels: response.data.channels,
-            }));
-            setStage("compose");
-          } else {
-            setStage("home");
-            console.log("login failed", response);
-          }
-        }
-      );
-    }
-  }, [token]);
+  // useEffect(() => {
+  //   if (token === "") {
+  //     setLoading(true);
+  //     chrome.runtime.sendMessage(
+  //       { message: "AUTHENTICATE", token },
+  //       function (response) {
+  //         setLoading(false);
+  //         if (response.type === "success") {
+  //           localStorage.setItem("AUTH_USER", JSON.stringify({
+  //             username: response.data.username,
+  //             avatar: response.data.avatar,
+  //             channels: response.data.channels,
+  //           }));
+  //           setStage("compose");
+  //         } else {
+  //           setStage("home");
+  //           console.log("login failed", response);
+  //         }
+  //       }
+  //     );
+  //   }
+  // }, [token]);
 
   return (
     <>
@@ -150,7 +150,7 @@ function App() {
           </StyledApp>
         ) : (
           <> */}
-            <Home/>
+            <Auth/>
           {/* </>
         )
       } */}

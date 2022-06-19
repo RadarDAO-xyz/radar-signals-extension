@@ -7,6 +7,7 @@ const SCOPE = encodeURIComponent('identify guilds');
 const BASE_URL = "https://radar-signal-be.herokuapp.com";
 
 
+
 function create_auth_endpoint() {
     let nonce = encodeURIComponent(Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15));
     let endpoint_url = `${DISCORD_URI_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}index.html&response_type=${RESPONSE_TYPE}&scope=${SCOPE}&nonce=${nonce}`;
@@ -75,7 +76,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
     if(request.message === 'AUTHENTICATE') {
         getProfile(request.token).then(json => {
-            console.log(json);
             sendResponse({ type: "success", data: json });
         }).catch(err => {
             console.log(err);
@@ -99,15 +99,28 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
 
 const extensionIconClickListener = (event) => {
-    // console.log(`chrome-extension://${chrome.runtime.id}/index.html` === event.url)
-    // if(event.url !== `chrome-extension://${chrome.runtime.id}/index.html`) {
-    //     console.log("not the same")
-    //     
-    // }
+    const extensionPage = `chrome-extension://${chrome.runtime.id}/index.html`;
 
-    const isLoggedIn = false;
-    if(isLoggedIn) chrome.action.setPopup({popup: 'index.html'});
-    // else chrome.tabs.create({ url: `chrome-extension://${chrome.runtime.id}/index.html` });
+    chrome.storage.local.get('AUTH_TOKEN', function(data) {
+        const isLoggedIn = data.AUTH_TOKEN && data.AUTH_TOKEN !== null
+        if (isLoggedIn) {
+            chrome.action.setPopup({popup: 'main.html'});
+            return;
+        }
+    });
+
+    if(event.url !== extensionPage) {     
+        chrome.tabs.query({}, function(tabs) {
+            for (let i = 0, tab; tab === tabs[i]; i++) {
+                if (tab.url === extensionPage) {
+                    chrome.tabs.reload(tab.id, {}, function(){});
+                    chrome.tabs.update(tab.id, {active: true});
+                    return;
+                }
+            }
+            chrome.tabs.create({url: extensionPage});
+        });
+    }
  };
          
  chrome.action.onClicked.addListener(extensionIconClickListener);
