@@ -149,10 +149,10 @@ export const SelectChannel = ({
   ];
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("AUTH_USER")) || null;
+    const user = JSON.parse(localStorage.getItem("AUTH_USER") as string) || null;
     const _channels = user?.channels || null;
     const list = _channels?.map((channel: any) => ({
-      label: channel.name,
+      label: `#${channel.name}`,
       value: channel.id,
     }));
     setChannels(list);
@@ -160,60 +160,31 @@ export const SelectChannel = ({
   }, []);
 
   return (
-    <>
-      <Wrapper>
-        <h2 className="select-channel-head">Select Channel</h2>
-        <Select
-          options={channels || fallBackOptions}
-          onChange={handleChannelSelect}
-          placeholder={"Search channel name here"}
-          components={{
-            Control,
-            DropdownIndicator: () => null,
-            IndicatorSeparator: () => null,
-            Group,
-          }}
-          isSearchable
-          styles={customSelectStyles}
-          onFocus={() => setopenMenu(true)}
-          menuIsOpen={openMenu}
-        />
-      </Wrapper>
-    </>
+    <Wrapper>
+      <h2 className="select-channel-head">Select Channel</h2>
+      <Select
+        options={channels || fallBackOptions}
+        onChange={handleChannelSelect}
+        placeholder={"Search channel name here"}
+        components={{
+          Control,
+          DropdownIndicator: () => null,
+          IndicatorSeparator: () => null,
+          Group,
+        }}
+        isSearchable
+        styles={customSelectStyles}
+        onFocus={() => setopenMenu(true)}
+        menuIsOpen={openMenu}
+      />
+    </Wrapper>
   );
 };
 
-// TODO - Move to ./style as SC
 const Wrapper = styled.div`
+  width: 100%;
   .select-channel-head {
     margin-top: -40px;
     font-family: "PostGrotesk";
-  }
-  .text-area {
-    background: #fff;
-    padding: 22px;
-    border: 1px solid #000;
-    width: 269px;
-    height: 100px;
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
-    resize: none;
-    &:active {
-      box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.5);
-    }
-  }
-  .box {
-    background: #fff;
-    padding: 22px;
-    border: 1px solid #000;
-    width: 269px;
-    height: 100px;
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
-    resize: none;
-    margin: 5px;
-    display: "flex";
-    flex-direction: "column";
-  }
-  .btn-send {
-    margin-top: 5px;
   }
 `;

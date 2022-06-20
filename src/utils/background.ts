@@ -6,7 +6,10 @@ const REDIRECT_URI = encodeURIComponent(chrome.identity.getRedirectURL());
 const SCOPE = encodeURIComponent('identify guilds');
 const BASE_URL = "https://radar-signal-be.herokuapp.com";
 
-
+interface Tab {
+    id: number | undefined;
+    url: string;
+}
 
 function create_auth_endpoint() {
     let nonce = encodeURIComponent(Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15));
@@ -56,7 +59,6 @@ const getProfile = async (token: string) => {
         }
     });
     const json = await response.json();
-    console.log(json);
     return json
 }
 
@@ -70,7 +72,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             url: create_auth_endpoint(),
             interactive: true
         }, function (redirect_uri) {
-            sendResponse({ redirect_uri });
+            sendResponse(redirect_uri);
         });
     }
 
@@ -85,7 +87,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
     if (request.message === 'SEND_SIGNAL') { 
         submitSignal(request.token,request.signalMessage,request.channelId, request.url).then(json=>{
-            console.log(json);
             sendResponse('success');
         }).catch(err => {
             console.log(err);
@@ -98,7 +99,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
 
 
-const extensionIconClickListener = (event) => {
+const extensionIconClickListener = (event: any) => {
     const extensionPage = `chrome-extension://${chrome.runtime.id}/index.html`;
 
     chrome.storage.local.get('AUTH_TOKEN', function(data) {
@@ -110,11 +111,14 @@ const extensionIconClickListener = (event) => {
     });
 
     if(event.url !== extensionPage) {     
-        chrome.tabs.query({}, function(tabs) {
+        chrome.tabs.query({}, function(tabs: chrome.tabs.Tab[]) {
             for (let i = 0, tab; tab === tabs[i]; i++) {
-                if (tab.url === extensionPage) {
-                    chrome.tabs.reload(tab.id, {}, function(){});
-                    chrome.tabs.update(tab.id, {active: true});
+                 // @ts-ignore
+                if (tab?.url === extensionPage) {
+                     // @ts-ignore
+                    chrome.tabs.reload(tab.id ?? 0, {}, function(){});
+                     // @ts-ignore
+                    chrome.tabs.update(tab?.id, {active: true});
                     return;
                 }
             }
@@ -124,3 +128,14 @@ const extensionIconClickListener = (event) => {
  };
          
  chrome.action.onClicked.addListener(extensionIconClickListener);
+
+
+ chrome.storage.onChanged.addListener(()=>{
+    chrome.storage.local.get('AUTH_TOKEN', function(data) {
+        const hasToken = data.AUTH_TOKEN && data.AUTH_TOKEN !== null
+        if(!hasToken) chrome.action.setPopup({popup: ''});
+    });
+ })
+
+
+ export {};
