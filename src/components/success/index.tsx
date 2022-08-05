@@ -22,7 +22,7 @@ export const SuccessPage = ({ jumpStage, setsignalComment, setselectedChannel }:
           type="button" 
           className="button btn-select"
           onClick={()=> {
-            window.open('https://discord.gg/TGEEpTmQ', '_blank');
+            window.open('https://discord.com/invite/xYCq3VGjhM', '_blank');
           }}
         >
           Continue in Discord →

@@ -82,7 +82,7 @@ const AuthPage = () => {
           <div id="auth">
 
             <div id="instructions">
-              <p>Next Steps</p>
+              <p>How to share signals:</p>
               <ul>
                 <li>Visit any URL and open the extension</li>
                 <li>Comment on why this signal is interesting</li>

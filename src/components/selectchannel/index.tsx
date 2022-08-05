@@ -4,12 +4,21 @@ import Select, {
   components,
   ControlProps,
   GroupProps,
+  GroupHeadingProps,
   StylesConfig,
   GroupBase,
 } from "react-select";
 
+const icons: any = {
+  "People & Planet": "🌍",
+  "Creative": "🎨",
+  "Technology": "📡",
+  "Health & Wellness": "💖",
+  "Identity": "💭"
+}
+
 const customSelectStyles: StylesConfig<unknown, boolean, GroupBase<unknown>> = {
-  input: (styles) => ({
+  input: (styles, state) => ({
     ...styles,
     fontFamily: "PostGrotesk",
     fontStyle: "normal",
@@ -17,7 +26,7 @@ const customSelectStyles: StylesConfig<unknown, boolean, GroupBase<unknown>> = {
     fontSize: "12.2273px",
     lineHeight: "16px",
   }),
-  control: (styles) => ({
+  control: (styles, state) => ({
     ...styles,
     paddingLeft: "10px",
   }),
@@ -33,16 +42,21 @@ const customSelectStyles: StylesConfig<unknown, boolean, GroupBase<unknown>> = {
   menu: (styles) => ({
     ...styles,
     fontFamily: "PostGrotesk",
-    fontSize: "12px",
-    fontWeight: 400,
+    fontSize: "13px",
+    fontWeight: 500,
     lineHeight: "16px",
     letterSpacing: "0em",
+    border: "1px solid #000000",
+    borderRadius: 0
   }),
   option: (styles) => ({
     ...styles,
     background: "#FFF",
     textAlign: "left",
+    borderBottom: "0.5px solid rgba(0, 0, 0, 0.3)",
     paddingLeft: "28px",
+    fontSize: "13px",
+    fontWeight: 500,
     ":hover": {
       background: "#8F00FF",
       color: "#fff",
@@ -54,11 +68,13 @@ const customSelectStyles: StylesConfig<unknown, boolean, GroupBase<unknown>> = {
     fontFamily: "PostGrotesk",
     color: "#000",
     fontStyle: "normal",
-    fontWeight: 700,
+    fontWeight: 800,
     fontSize: "14px",
     lineHeight: "19px",
     textAlign: "left",
-    textTransform: "none",
+    textTransform: "uppercase",
+    borderBottom: "1px solid #000000",
+    paddingBottom: "12px"
   }),
   group: (styles) => ({
     ...styles,
@@ -68,6 +84,27 @@ const customSelectStyles: StylesConfig<unknown, boolean, GroupBase<unknown>> = {
     fontSize: "12.2273px",
     lineHeight: "16px",
   }),
+  menuList: (styles) => ({
+    ...styles,
+    "::-webkit-scrollbar": {
+      width: "6px",
+      height: "0px",
+      padding: "2px"
+    },
+    "::-webkit-scrollbar-track": {
+      borderLeft: "1px solid #000000",
+      padding: "2px"
+    },
+    "::-webkit-scrollbar-thumb": {
+      background: "#8F00FF",
+      borderRadius: "30px",
+      padding: "2px",
+      backgroundClip: "padding-box"
+    },
+    "::-webkit-scrollbar-thumb:hover": {
+      background: "#8F00FF"
+    }
+  })
 };
 
 const Group = (props: GroupProps<any | any, false>) => (
@@ -75,6 +112,17 @@ const Group = (props: GroupProps<any | any, false>) => (
     <components.Group {...props} />
   </div>
 );
+
+const GroupHeading = (props: GroupHeadingProps<any | any, false>) => {
+  const label = props.children as string
+  return (
+    <div>
+      <components.GroupHeading {...props}>
+        <span style={{ fontSize: 16, marginRight: 4 }}>{icons[label]}</span> {label}
+      </components.GroupHeading>
+    </div>
+  );
+}
 
 const Control = ({ children, ...props }: ControlProps<any, false>) => {
   // @ts-ignore
@@ -151,12 +199,30 @@ export const SelectChannel = ({
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("AUTH_USER") as string) || null;
     const _channels = user?.channels || null;
-    const list = _channels?.map((channel: any) => ({
-      label: `#${channel.name}`,
-      value: channel.id,
-    }));
+    const list = _channels.reduce((acc: any, channel: any)=> {
+      let clone = acc
+
+      const categoryIndex = acc.findIndex((ch: any)=> {
+        console.log("cv", ch)
+
+        return ch.label === channel.category
+      })
+      console.log("==>", categoryIndex)
+      if(categoryIndex !== -1) {
+        const removed = clone.splice(categoryIndex, 1)[0];
+        console.log("mn=>", removed)
+
+        removed.options.push({ label: `#${channel.name}`, value: channel.id })
+        return [
+            ...clone,
+            removed
+        ]
+      }
+
+      return [{ label: channel.category, options: []}, ...acc]
+    },[])
     setChannels(list);
-    console.log(user?.channels);
+    console.log(list);
   }, []);
 
   return (
@@ -171,11 +237,13 @@ export const SelectChannel = ({
           DropdownIndicator: () => null,
           IndicatorSeparator: () => null,
           Group,
+          GroupHeading
         }}
         isSearchable
         styles={customSelectStyles}
         onFocus={() => setopenMenu(true)}
         menuIsOpen={openMenu}
+        maxMenuHeight={350}
       />
     </Wrapper>
   );
