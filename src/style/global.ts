@@ -5,8 +5,8 @@ export const GlobalStyle = createGlobalStyle`
 
 	:root {
 
-		--extension-width: 360px;
-		--extension-height: 280px;
+		--extension-width: 321px;
+		--extension-height: 500px;
 
 		--base-unit: 2px; 
 		--primary-color: rgba(0, 0, 0, 1);

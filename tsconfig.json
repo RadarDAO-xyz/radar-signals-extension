@@ -16,11 +16,10 @@
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "isolatedModules": true,
   },
-  "include": [
-    "client-extension/src"
-  ]
+  "exclude": ["node_modules", "public", "webpack", "config", "coverage"]
 }

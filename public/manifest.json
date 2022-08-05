@@ -3,10 +3,7 @@
   "description": "Find signals. Share them.",
   "version": "1.0",
   "manifest_version": 3,
-  "action": {
-      "default_popup": "index.html",
-      "default_title": "Capture Signal"
-  },
+  "action": {},
   "icons": {
       "16": "logo192.png",
       "48": "logo192.png",
@@ -15,11 +12,6 @@
   "background": {
     "service_worker": "./static/js/background.js"
   },
-  "content_scripts": [
-    {
-      "js": ["./static/js/content.js"]
-    }
-  ],
   "host_permissions": ["https://radar-signal-be.herokuapp.com/*"],
-  "permissions": ["identity", "tabs"]
+  "permissions": ["identity", "tabs", "activeTab", "storage"]
 }
