@@ -1,4 +1,4 @@
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyle = createGlobalStyle`
 
@@ -8,7 +8,7 @@ export const GlobalStyle = createGlobalStyle`
 		--extension-width: 321px;
 		--extension-height: 500px;
 
-		--base-unit: 2px; 
+		--base-unit: 2px;
 		--primary-color: rgba(0, 0, 0, 1);
 		--primary-background-color: rgba(255, 255, 255, 1);
 		--primary-border-color: rgba(0, 0, 0, 1);
@@ -27,7 +27,7 @@ export const GlobalStyle = createGlobalStyle`
 	html,
 	body {
 		margin: 0;
-		padding: 0; 
+		padding: 0;
 		/* max-width: var(--extension-width); */
 	}
 
