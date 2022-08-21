@@ -1,17 +1,14 @@
 {
-  "name": "Radar Signals",
-  "description": "Find signals. Share them.",
-  "version": "1.0",
   "manifest_version": 3,
-  "action": {},
-  "icons": {
-      "16": "logo192.png",
-      "48": "logo192.png",
-      "128": "logo192.png"
+  "name": "Radar Signal Sharing Extension",
+  "version": "0.0.1",
+  "action": {
+    "default_icon": {
+
+    },
+    "default_title": "Open the popup",
+    "default_popup": "index.html"
   },
-  "background": {
-    "service_worker": "./static/js/background.js"
-  },
-  "host_permissions": ["https://radar-signal-be.herokuapp.com/*"],
-  "permissions": ["identity", "tabs", "activeTab", "storage"]
+  "description": "Radar Signal Sharing Extension",
+  "icons": {}
 }

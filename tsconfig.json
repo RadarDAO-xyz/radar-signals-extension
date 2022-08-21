@@ -16,10 +16,11 @@
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "noEmit": true,
-    "jsx": "react-jsx",
-    "baseUrl": ".",
     "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx"
   },
-  "exclude": ["node_modules", "public", "webpack", "config", "coverage"]
+  "include": [
+    "src"
+  ]
 }
