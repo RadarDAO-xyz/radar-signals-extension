@@ -9,16 +9,13 @@ img,legend{border:0}legend,td,th{padding:0}html{font-family:sans-serif;-ms-text-
 .div-block {
     position: relative;
     overflow: hidden;
-    width: 30%;
-    height: 99vh;
-    margin: 2px auto 10%;
+    width: 70%;
+    /* height: 99vh; */
+    /* margin: 2px auto 10%; */
     /* border: 1px solid #000; */
 }
 
 .div-block-2 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
     padding-top: 20px;
     -webkit-box-pack: center;
@@ -87,8 +84,7 @@ img,legend{border:0}legend,td,th{padding:0}html{font-family:sans-serif;-ms-text-
     -webkit-justify-content: flex-start;
     -ms-flex-pack: start;
     justify-content: flex-start;
-    padding-top: 2
-    0px;
+    padding-top: 15px;
 }
 
 .div-block-4.channel {
@@ -99,9 +95,13 @@ img,legend{border:0}legend,td,th{padding:0}html{font-family:sans-serif;-ms-text-
     justify-content: center;
 }
 
-.div-block-4.tags2 {
+.tags2 {
+    display: flex;
+    flex-direction: row;
     overflow: hidden;
-    width: auto;
+    width: 100%;
+    align-items: center;
+    justify-content: right;
 }
 
 .text-block {
@@ -129,12 +129,21 @@ img,legend{border:0}legend,td,th{padding:0}html{font-family:sans-serif;-ms-text-
     white-space: nowrap;
 }
 
+.tag-holder {
+    max-width: 500px;
+    display: flex;
+    position: absolute;
+    justify-content: flex-end;
+    transform: translateX(30%);
+}
+
 .tag {
     display: inline-block;
     width: auto;
     margin-left: 2%;
     border-radius: 20px;
     background-color: #000;
+    cursor: pointer
 }
 
 .channel {
@@ -146,7 +155,8 @@ img,legend{border:0}legend,td,th{padding:0}html{font-family:sans-serif;-ms-text-
     font-size: 16px;
 }
 
-.text-block-2.comment { /* Might have to get rid of this later */
+.text-block-2.comment {
+    /* Might have to get rid of this later */
     margin-top: 0%;
     padding-right: 3%;
     padding-left: 3%;
@@ -200,6 +210,7 @@ img,legend{border:0}legend,td,th{padding:0}html{font-family:sans-serif;-ms-text-
 .text-block-3 {
     color: #fff;
     font-size: 20px;
+    padding: 20px 0px 20px 0px;
 }
 
 @media screen and (max-width: 479px) {
