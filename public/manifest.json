@@ -1,14 +1,13 @@
 {
-  "manifest_version": 3,
-  "name": "Radar Signal Sharing Extension",
-  "version": "0.0.1",
-  "action": {
-    "default_icon": {
-
+    "manifest_version": 3,
+    "name": "Radar Signal Sharing Extension",
+    "version": "0.0.1",
+    "action": {
+        "default_icon": {},
+        "default_title": "Open the popup",
+        "default_popup": "index.html"
     },
-    "default_title": "Open the popup",
-    "default_popup": "index.html"
-  },
-  "description": "Radar Signal Sharing Extension",
-  "icons": {}
+    "description": "Radar Signal Sharing Extension",
+    "icons": {},
+    "permissions": ["activeTab", "storage"]
 }
