@@ -5,22 +5,33 @@ export type TextInputProps = {
     id: string;
     title: string;
     placeholder: string;
-}
+    value?: string;
+    onChange?: React.FormEventHandler<HTMLInputElement>;
+};
 
 class TextInput extends React.Component<TextInputProps> {
-    public title: string;
-    public placeholder: string;
     constructor(props: TextInputProps) {
         super(props);
 
-        this.title = props.title;
-        this.placeholder = props.placeholder;
+        this.handleChange = this.handleChange.bind(this);
     }
+
+    handleChange(e: React.FormEvent<HTMLInputElement>) {
+        return this.props.onChange ? this.props.onChange(e) : undefined;
+    }
+
     render() {
         return (
             <div className="div-block-3">
-                <label className="text-block">{this.title}</label>
-                <input id={this.props.id} type="text" className="div-block-4" placeholder={this.placeholder}></input>
+                <label className="text-block">{this.props.title}</label>
+                <input
+                    onChange={this.handleChange}
+                    id={this.props.id}
+                    type="text"
+                    className="div-block-4"
+                    placeholder={this.props.placeholder}
+                    value={this.props.value}
+                ></input>
             </div>
         );
     }

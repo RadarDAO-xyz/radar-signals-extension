@@ -4,6 +4,7 @@ import '../pages/Submit.css';
 type TagInputProps = {
     title: string;
     placeholder: string;
+    onChange?: (tags: string[]) => void;
 };
 
 type TagInputState = {
@@ -13,6 +14,7 @@ type TagInputState = {
 class TagInput extends React.Component<TagInputProps, TagInputState> {
     public title: string;
     public placeholder: string;
+    public handleChange?: (tags: string[]) => void;
     constructor(props: TagInputProps) {
         super(props);
 
@@ -21,6 +23,8 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
         this.state = {
             tags: ['techno', 'bio-lightning', 'craft']
         };
+
+        this.handleChange = props.onChange;
 
         this.handleKeyDown = this.handleKeyDown.bind(this);
         this.handleTagClick = this.handleTagClick.bind(this);
@@ -32,7 +36,9 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
             k.preventDefault();
             let target = k.target as HTMLInputElement;
             const value = target.value;
-            this.setState({ tags: [value, ...this.state.tags] });
+            this.setState({ tags: [value, ...this.state.tags] }, () =>
+                this.handleChange?.(this.state.tags)
+            );
             target.value = '';
         }
     }
@@ -42,6 +48,7 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
         const i = this.state.tags.indexOf(target.innerText.substring(1));
         this.state.tags.splice(i, 1);
         this.setState({});
+        this.handleChange?.(this.state.tags);
     }
 
     render() {
