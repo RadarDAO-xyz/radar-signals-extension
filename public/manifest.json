@@ -9,5 +9,8 @@
     },
     "description": "Radar Signal Sharing Extension",
     "icons": {},
-    "permissions": ["activeTab", "storage"]
+    "permissions": ["activeTab", "storage", "identity"],
+    "background": {
+        "service_worker": "./background.js"
+    }
 }

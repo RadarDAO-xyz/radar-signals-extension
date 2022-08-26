@@ -1,6 +1,7 @@
 import React from 'react';
 import TagInput from '../components/TagInput';
 import TextInput from '../components/TextInput';
+import { AuthSaveKey, BackendURL } from '../constants';
 import './Submit.css';
 
 type SubmitProps = {};
@@ -16,7 +17,13 @@ class Submit extends React.Component<SubmitProps, SubmitState> {
     constructor(props: SubmitProps) {
         super(props);
 
-        this.state = { url: '', title: '', channelId: '', tags: [], comment: '' };
+        this.state = {
+            url: '',
+            title: '',
+            channelId: '',
+            tags: [],
+            comment: ''
+        };
 
         this.handleTitleChange = this.handleTitleChange.bind(this);
         this.handleTagChange = this.handleTagChange.bind(this);
@@ -25,13 +32,7 @@ class Submit extends React.Component<SubmitProps, SubmitState> {
     }
 
     componentDidMount() {
-        this.resolveTab().then(() => {
-            this.setState({});
-        });
-    }
-
-    componentDidUpdate() {
-        console.log(this.state);
+        this.resolveTab().then(() => this.setState({}));
     }
 
     resolveTab() {
@@ -68,16 +69,13 @@ class Submit extends React.Component<SubmitProps, SubmitState> {
     async handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         console.log('Submitted');
         e.preventDefault();
-        let auth;
-        if (window.isExtension) {
-            auth = (await chrome.storage.sync.get('Authorization')).Authorization;
-        } else {
-            auth = localStorage.getItem('Authorization');
-        }
+
+        let auth = await chrome.storage.sync.get(AuthSaveKey).then(x => x[AuthSaveKey].token); // Storage.getObject(AuthSaveKey).then(x => x?.token);
+
         const headers = new Headers();
         headers.set('Content-Type', 'application/json');
         headers.set('Authorization', auth);
-        fetch(`${window.backendUrl}/submit`, {
+        fetch(`${BackendURL}/submit`, {
             method: 'POST',
             headers,
             body: JSON.stringify({
