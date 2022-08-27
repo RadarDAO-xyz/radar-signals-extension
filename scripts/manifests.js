@@ -8,9 +8,6 @@ const v3Path = path.join(__dirname, '../v3');
 
 const manifests = path.join(__dirname, '../manifests');
 
-fs.rmSync(v2Path, { recursive: true });
-fs.rmSync(v3Path, { recursive: true });
-
 copy(buildPath, v2Path, function (error, results) {
     if (error) {
         console.error('Copy failed: ' + error);
