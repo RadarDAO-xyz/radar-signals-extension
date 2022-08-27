@@ -108,11 +108,14 @@ class Submit extends React.Component<SubmitProps, SubmitState> {
                     console.error(await x.text());
                 }
             })
-            .catch(e => console.error(e));
+            .catch(e => {
+                this.setState({ failed: true });
+                console.error(e)
+            });
     }
 
     async handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-        if (this.state.submitting || this.state.submitted) return;
+        if (this.state.submitting || this.state.submitted || this.state.failed) return;
         this.setState({ submitting: true });
         console.log('Submitted');
         e.preventDefault();
@@ -142,7 +145,10 @@ class Submit extends React.Component<SubmitProps, SubmitState> {
                     console.error(await x.text());
                 }
             })
-            .catch(e => console.error(e));
+            .catch(e => {
+                this.setState({ submitting: false, failed: true });
+                console.error(e)
+            });
     }
 
     render() {
