@@ -3,4 +3,4 @@ export const AuthSaveKey = "DiscordAuthAccessToken"
 export const RequiredScopes = ['identify', 'guilds'];
 
 // This is only mentioned here
-export const BackendURL = "http://localhost:4000"
+export const BackendURL = "https://radar-signal-ext.herokuapp.com"
