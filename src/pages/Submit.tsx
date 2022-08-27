@@ -1,4 +1,5 @@
 import React from 'react';
+import DropInput from '../components/DropInput';
 import TagInput from '../components/TagInput';
 import TextInput from '../components/TextInput';
 import { AuthSaveKey, BackendURL } from '../constants';
@@ -14,8 +15,12 @@ type SubmitState = {
     tags: string[];
     channelId: string;
     comment: string;
+    submitting: boolean;
+    submitted: boolean;
+    failed: boolean;
 };
 class Submit extends React.Component<SubmitProps, SubmitState> {
+    public channels: { id: string; name: string }[];
     constructor(props: SubmitProps) {
         super(props);
 
@@ -24,17 +29,23 @@ class Submit extends React.Component<SubmitProps, SubmitState> {
             title: '',
             channelId: '',
             tags: [],
-            comment: ''
+            comment: '',
+            submitting: false,
+            submitted: false,
+            failed: false
         };
+
+        this.channels = [];
 
         this.handleTitleChange = this.handleTitleChange.bind(this);
         this.handleTagChange = this.handleTagChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleChannelChange = this.handleChannelChange.bind(this);
         this.handleCommentChange = this.handleCommentChange.bind(this);
     }
 
     componentDidMount() {
-        this.resolveTab().then(() => this.setState({}));
+        Promise.all([this.resolveTab(), this.fetchChannels()]).then(() => this.setState({}));
     }
 
     resolveTab() {
@@ -63,19 +74,50 @@ class Submit extends React.Component<SubmitProps, SubmitState> {
         this.setState({ tags });
     }
 
+    handleChannelChange(e: React.FormEvent<HTMLSelectElement>) {
+        this.setState({ channelId: (e.target as HTMLSelectElement).value });
+    }
+
     handleCommentChange(e: React.FormEvent<HTMLTextAreaElement>) {
         this.setState({ comment: (e.target as HTMLTextAreaElement).value });
     }
 
-    async handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-        console.log('Submitted');
-        e.preventDefault();
-
-        let auth = window.isExtension
+    async getAuth() {
+        return window.isExtension
             ? await browser.storage.sync
                   .get(AuthSaveKey)
                   .then((x: Record<string, any>) => x[AuthSaveKey].token)
             : 'browsermode';
+    }
+
+    async fetchChannels() {
+        let auth = await this.getAuth();
+
+        const headers = new Headers();
+        headers.set('Authorization', auth);
+        return fetch(`${BackendURL}/channels`, {
+            headers
+        })
+            .then(async x => {
+                if (x.ok) {
+                    console.log('Success');
+                    const channels = await x.json();
+                    this.channels = channels;
+                    return channels;
+                } else {
+                    console.error(await x.text());
+                }
+            })
+            .catch(e => console.error(e));
+    }
+
+    async handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+        if (this.state.submitting || this.state.submitted) return;
+        this.setState({ submitting: true });
+        console.log('Submitted');
+        e.preventDefault();
+
+        let auth = await this.getAuth();
 
         const headers = new Headers();
         headers.set('Content-Type', 'application/json');
@@ -93,8 +135,10 @@ class Submit extends React.Component<SubmitProps, SubmitState> {
         })
             .then(async x => {
                 if (x.ok) {
+                    this.setState({ submitting: false, submitted: true });
                     console.log('Success');
                 } else {
+                    this.setState({ submitting: false, failed: true });
                     console.error(await x.text());
                 }
             })
@@ -130,12 +174,12 @@ class Submit extends React.Component<SubmitProps, SubmitState> {
                         placeholder="#add your hashtags"
                         onChange={this.handleTagChange} // Each change is sent back to this Submit form page
                     ></TagInput>
-                    <div className="channel">
-                        <div className="text-block">What channel do you want to post it to?</div>
-                        <div className="div-block-4 channel">
-                            <div className="text-block-2">↓ Select Channel ↓</div>
-                        </div>
-                    </div>
+                    <DropInput
+                        title="What channel do you want to post it to?"
+                        placeholder="↓ Select Channel ↓"
+                        onChange={this.handleChannelChange}
+                        options={this.channels}
+                    ></DropInput>
                     <div className="div-block-3">
                         <label className="text-block">
                             Why Is this Signal &amp; Thread interesting?
@@ -147,8 +191,18 @@ class Submit extends React.Component<SubmitProps, SubmitState> {
                             onChange={this.handleCommentChange}
                         ></textarea>
                     </div>
-                    <button type="submit" className="button text-block-3">
-                        SEND
+                    <button
+                        type="submit"
+                        className="button text-block-3"
+                        disabled={this.state.submitted}
+                    >
+                        {this.state.submitting
+                            ? 'SENDING...'
+                            : this.state.failed
+                            ? 'ERROR OCCURRED'
+                            : this.state.submitted
+                            ? 'SUBMITTED'
+                            : 'SEND'}
                     </button>
                 </form>
             );
