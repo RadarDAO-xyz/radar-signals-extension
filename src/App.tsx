@@ -11,7 +11,12 @@ function App() {
     try {
         window.isExtension = chrome && true;
     } catch {
-        window.isExtension = false;
+        try {
+            // @ts-ignore
+            window.isExtension = browser && true;
+        } catch {
+            window.isExtension = false;
+        }
     }
     return (
         <div className="App">

@@ -1,6 +1,8 @@
 import React from 'react';
 import { AuthSaveKey, RequiredScopes } from '../constants';
 import Submit from './Submit';
+import browser from 'webextension-polyfill';
+// let browser: any;
 
 type LoginProps = {};
 
@@ -26,37 +28,40 @@ class Login extends React.Component<LoginProps, LoginState> {
     }
 
     async componentDidMount() {
-        const authSave = (await chrome.storage.sync
-            .get(AuthSaveKey)
-            .then(x => x[AuthSaveKey])) as AuthSave;
-        console.log(authSave);
-        if (authSave) {
-            console.log(
-                authSave.expires_at > Date.now(),
-                authSave.scopes.join(' ') === RequiredScopes.join(' ')
-            );
-            if (
-                // Check if old auth is still valid (right scopes and not expired)
-                // I think chrome has some sort of automatic feature but
-                // i couldn't figure out how to use it
-                authSave.expires_at > Date.now() &&
-                authSave.scopes.sort((a, b) => a.localeCompare(b)).join(' ') === // Sort both alphabetically so it compares right
-                    RequiredScopes.sort((a, b) => a.localeCompare(b)).join(' ')
-            ) {
-                this.setState({ finished: true });
-            } else {
-                await chrome.storage.sync.remove(AuthSaveKey);
-                this.setState({ finished: false });
+        if (window.isExtension) {
+            const authSave = (await browser.storage.sync
+                .get(AuthSaveKey)
+                .then((x: Record<string, any>) => x[AuthSaveKey])) as AuthSave;
+            console.log(authSave);
+            if (authSave) {
+                console.log(
+                    authSave.expires_at > Date.now(),
+                    authSave.scopes.join(' ') === RequiredScopes.join(' ')
+                );
+                if (
+                    // Check if old auth is still valid (right scopes and not expired)
+                    // I think browser has some sort of automatic feature but
+                    // i couldn't figure out how to use it
+                    authSave.expires_at > Date.now() &&
+                    authSave.scopes.sort((a, b) => a.localeCompare(b)).join(' ') === // Sort both alphabetically so it compares right
+                        RequiredScopes.sort((a, b) => a.localeCompare(b)).join(' ')
+                ) {
+                    this.setState({ finished: true });
+                } else {
+                    await browser.storage.sync.remove(AuthSaveKey);
+                    this.setState({ finished: false });
+                }
             }
+        } else {
+            this.setState({ finished: true });
         }
     }
 
-    handleClick(e: React.MouseEvent<HTMLButtonElement>) {
+    async handleClick(e: React.MouseEvent<HTMLButtonElement>) {
         if (window.isExtension) {
-            chrome.runtime.sendMessage({ message: 'login' }, response => {
-                console.log('done');
-                if (response === 'success') this.setState({ finished: true });
-            });
+            const response = await browser.runtime.sendMessage(undefined, 'login');
+            console.log('done');
+            if (response === 'success') this.setState({ finished: true });
         } else {
             this.setState({ finished: true });
         }
