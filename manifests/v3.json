@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "Radar Signal Sharing Extension",
-    "version": "0.0.1",
+    "version": "0.0.0.1",
     "action": {
         "default_icon": {
             "192": "logo192.png"
