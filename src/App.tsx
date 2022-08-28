@@ -9,7 +9,7 @@ declare global {
 
 function App() {
     try {
-        window.isExtension = chrome && true;
+        window.isExtension = chrome?.identity && true; // chrome is an existing object so we check for identity (which we have permissions for)
     } catch {
         try {
             // @ts-ignore
