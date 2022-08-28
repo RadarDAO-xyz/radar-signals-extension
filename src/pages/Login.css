@@ -1,0 +1,23 @@
+.button-back {
+    width: 420px ; /* x * 1.61803398875 = 420 */
+    height: 260px;
+    border: 1px black solid;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-button {
+    margin: auto;
+    border-radius: 0px;
+    border: 0;
+    background-color: black;
+    color: white;
+    padding: 20px;
+    font-weight: bolder;
+}
+
+.login-image {
+    padding-top: 10%;
+}

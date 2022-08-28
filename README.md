@@ -1,30 +1,27 @@
-# Radar Signals Chrome Extension
-### Quick Start
+# Radar Signal Sharing Extension
 
-#### Install dependencies
-* `yarn` or `yarn install`
-* In `src/data/` copy `.test.channels.example.json` to a new file called `.test.channels.json` (e.g. `src/data/.test.channels.json`) and populate with your channel names, categories, id's and webhooks.
+This browser extension allows Radar members to share signals more efficiently
+without having to move from browser to discord and back
 
-> RADAR DAO members: ask in [#product-squad](https://discord.com/channels/913873017287884830/961996856198590544) for an example file with test channels
+## Available Scripts
 
-#### Development
-* `yarn dev`
-* Then visit [http://localhost:3000](http://localhost:3000) in your web browser
+In the project directory, you can run:
 
-> The page will reload if you make edits.
-> You will also see any lint errors in the console.
+### `npm start`
 
-#### Production (run as a Chrome extension)
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-* `yarn build`
-* Now, [load the extension from the `build` folder](https://support.google.com/chrome/a/answer/2714278?hl=en#:~:text=At%20the%20top%20right%2C%20turn,the%20app%20or%20extension%20folder.&text=click%20the%20app%20or%20extension.)
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
 
+As this is a browser extension, do not expect full functionality when run in browser page mode
 
+### `npm run build`
 
-#### Testing
-> TODO 
-* `yarn test`
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-> Launches the test runner in the interactive watch mode.
-> See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
+The post build script will copy the build into 2 separate folders, `v2` and `v3`.\
+As Firefox does not support Manifest v3 as of August 2022, you must use the v2 folder.\
+Chrome requires a v3 manifest for publishing and to avoid deprecation warnings.

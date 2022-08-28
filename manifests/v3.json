@@ -1,0 +1,24 @@
+{
+    "manifest_version": 3,
+    "name": "Radar Signal Sharing Extension",
+    "version": "0.0.1",
+    "action": {
+        "default_icon": {
+            "192": "logo192.png"
+        },
+        "default_title": "Open the popup",
+        "default_popup": "index.html"
+    },
+    "description": "Radar Signal Sharing Extension",
+    "icons": {
+        "192": "logo192.png"
+    },
+    "permissions": ["activeTab", "storage", "identity"],
+    "host_permissions": [
+        "https://radar-signal-ext.herokuapp.com/"
+    ],
+    "background": {
+        "service_worker": "./background.js",
+        "type": "module"
+    }
+}
