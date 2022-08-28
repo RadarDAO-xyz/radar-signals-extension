@@ -18,6 +18,7 @@ type SubmitState = {
     submitting: boolean;
     submitted: boolean;
     failed: boolean;
+    buttonText: string;
 };
 class Submit extends React.Component<SubmitProps, SubmitState> {
     public channels: { id: string; name: string }[];
@@ -32,7 +33,8 @@ class Submit extends React.Component<SubmitProps, SubmitState> {
             comment: '',
             submitting: false,
             submitted: false,
-            failed: false
+            failed: false,
+            buttonText: ''
         };
 
         this.channels = [];
@@ -45,7 +47,9 @@ class Submit extends React.Component<SubmitProps, SubmitState> {
     }
 
     componentDidMount() {
-        Promise.all([this.resolveTab(), this.fetchChannels()]).then(() => this.setState({}));
+        Promise.all([this.resolveTab(), this.fetchChannels()])
+            .then(() => this.checkInputs())
+            .catch(() => this.setState({ buttonText: 'Error occurred' }));
     }
 
     resolveTab() {
@@ -67,19 +71,32 @@ class Submit extends React.Component<SubmitProps, SubmitState> {
     }
 
     handleTitleChange(e: React.FormEvent<HTMLInputElement>) {
-        this.setState({ title: (e.target as HTMLInputElement).value });
+        this.setState({ title: (e.target as HTMLInputElement).value }, () => this.checkInputs());
     }
 
     handleTagChange(tags: string[]) {
-        this.setState({ tags });
+        this.setState({ tags }, () => this.checkInputs());
     }
 
     handleChannelChange(e: React.FormEvent<HTMLSelectElement>) {
-        this.setState({ channelId: (e.target as HTMLSelectElement).value });
+        this.setState({ channelId: (e.target as HTMLSelectElement).value }, () =>
+            this.checkInputs()
+        );
     }
 
     handleCommentChange(e: React.FormEvent<HTMLTextAreaElement>) {
-        this.setState({ comment: (e.target as HTMLTextAreaElement).value });
+        this.setState({ comment: (e.target as HTMLTextAreaElement).value }, () =>
+            this.checkInputs()
+        );
+    }
+
+    checkInputs() {
+        if (!this.state.title) return this.setState({ buttonText: 'Title is missing' });
+        if (!this.state.channelId) return this.setState({ buttonText: 'Channel is missing' });
+        if (!this.state.url) return this.setState({ buttonText: 'URL is missing' });
+
+        this.setState({ buttonText: '' });
+        return true;
     }
 
     async getAuth() {
@@ -110,15 +127,16 @@ class Submit extends React.Component<SubmitProps, SubmitState> {
             })
             .catch(e => {
                 this.setState({ failed: true });
-                console.error(e)
+                console.error(e);
             });
     }
 
     async handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault();
         if (this.state.submitting || this.state.submitted || this.state.failed) return;
+        if (!this.checkInputs()) return;
         this.setState({ submitting: true });
         console.log('Submitted');
-        e.preventDefault();
 
         let auth = await this.getAuth();
 
@@ -147,7 +165,7 @@ class Submit extends React.Component<SubmitProps, SubmitState> {
             })
             .catch(e => {
                 this.setState({ submitting: false, failed: true });
-                console.error(e)
+                console.error(e);
             });
     }
 
@@ -202,13 +220,14 @@ class Submit extends React.Component<SubmitProps, SubmitState> {
                         className="button text-block-3"
                         disabled={this.state.submitted}
                     >
-                        {this.state.submitting
-                            ? 'SENDING...'
-                            : this.state.failed
-                            ? 'ERROR OCCURRED'
-                            : this.state.submitted
-                            ? 'SUBMITTED'
-                            : 'SEND'}
+                        {this.state.buttonText ||
+                            (this.state.submitting
+                                ? 'SENDING...'
+                                : this.state.failed
+                                ? 'ERROR OCCURRED'
+                                : this.state.submitted
+                                ? 'SUBMITTED'
+                                : 'SEND')}
                     </button>
                 </form>
             );
