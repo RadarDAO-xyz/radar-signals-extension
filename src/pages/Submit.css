@@ -97,6 +97,7 @@ img,legend{border:0}legend,td,th{padding:0}html{font-family:sans-serif;-ms-text-
 
 .tags2 {
     display: flex;
+    position: relative;
     flex-direction: row;
     overflow: hidden;
     width: 100%;
@@ -123,24 +124,19 @@ img,legend{border:0}legend,td,th{padding:0}html{font-family:sans-serif;-ms-text-
     background-color: transparent;
 }
 
-.tag-text {
-    padding: 8px 20px;
-    color: #fff;
-    white-space: nowrap;
-}
-
 .tag-holder {
-    max-width: 500px;
+    max-width: 198px;
     display: flex;
     position: absolute;
-    justify-content: flex-end;
-    transform: translateX(30%);
+    left: 200px;
+    gap: 5px;
 }
 
 .tag {
-    display: inline-block;
-    width: auto;
-    margin-left: 2%;
+    padding: 8px 20px;
+    color: #fff;
+    white-space: nowrap;
+    min-width: max-content;
     border-radius: 20px;
     background-color: #000;
     cursor: pointer

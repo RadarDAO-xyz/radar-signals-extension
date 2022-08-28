@@ -51,6 +51,13 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
         this.handleChange?.(this.state.tags);
     }
 
+    handleWheel(e: React.WheelEvent<HTMLDivElement>) {
+        if (e.deltaY > 0)
+            (document.getElementById('tag-holder') as HTMLDivElement).scrollLeft += 10;
+        else if (e.deltaY < 0)
+            (document.getElementById('tag-holder') as HTMLDivElement).scrollLeft -= 10;
+    }
+
     render() {
         return (
             <div className="div-block-3">
@@ -62,11 +69,12 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
                         placeholder="#add your hashtags"
                         onKeyDown={this.handleKeyDown}
                     ></input>
-                    <div className="tag-holder">
+                    <div id="tag-holder" className="tag-holder" onWheel={this.handleWheel}> {/* Make scrolling work without a scrollbar */}
                         {this.state.tags.map((x, i) => (
                             <div
                                 onClick={this.handleTagClick}
-                                className="tag tag-text"
+                                onWheel={this.handleWheel}
+                                className="tag"
                                 key={i}
                             >{`#${x}`}</div>
                         ))}
