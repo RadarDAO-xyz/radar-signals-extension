@@ -1,6 +1,7 @@
 import React from 'react';
 import { AuthSaveKey, RequiredScopes } from '../constants';
 import Submit from './Submit';
+import './Login.css';
 import browser from 'webextension-polyfill';
 // let browser: any;
 
@@ -71,7 +72,12 @@ class Login extends React.Component<LoginProps, LoginState> {
         return this.state.finished ? (
             <Submit></Submit>
         ) : (
-            <button onClick={this.handleClick}>Login</button>
+            <div className="button-back">
+                <img src="HeaderLogo.png" loading="lazy" alt="" className="image" width="173" />
+                <button className="login-button" onClick={this.handleClick}>
+                    Login with Discord
+                </button>
+            </div>
         );
     }
 }
