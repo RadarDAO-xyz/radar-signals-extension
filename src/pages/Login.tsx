@@ -1,7 +1,7 @@
 import React from 'react';
 import { AuthSaveKey, RequiredScopes } from '../constants';
-import Submit from './Submit';
 import './Login.css';
+import Submit from './Submit';
 import browser from 'webextension-polyfill';
 // let browser: any;
 
@@ -9,6 +9,8 @@ type LoginProps = {};
 
 type LoginState = {
     finished: boolean;
+    started: boolean;
+    failed: boolean;
 };
 
 type AuthSave = {
@@ -22,7 +24,9 @@ class Login extends React.Component<LoginProps, LoginState> {
         super(props);
 
         this.state = {
-            finished: false
+            finished: false,
+            started: false,
+            failed: false
         };
 
         this.handleClick = this.handleClick.bind(this);
@@ -59,12 +63,15 @@ class Login extends React.Component<LoginProps, LoginState> {
     }
 
     async handleClick(e: React.MouseEvent<HTMLButtonElement>) {
+        if (this.state.finished || this.state.started || this.state.failed) return;
         if (window.isExtension) {
+            this.setState({ started: true });
             const response = await browser.runtime.sendMessage(undefined, 'login');
             console.log('done');
-            if (response === 'success') this.setState({ finished: true });
+            if (response === 'success') this.setState({ started: false, finished: true });
+            else this.setState({ failed: true, started: false });
         } else {
-            this.setState({ finished: true });
+            this.setState({ started: false, finished: true });
         }
     }
 
@@ -73,9 +80,13 @@ class Login extends React.Component<LoginProps, LoginState> {
             <Submit></Submit>
         ) : (
             <div className="button-back">
-                <img src="HeaderLogo.png" loading="lazy" alt="" className="image" width="173" />
+                <img src="HeaderLogo.png" loading="lazy" alt="" className="login-image" width="173" />
                 <button className="login-button" onClick={this.handleClick}>
-                    Login with Discord
+                    {this.state.started
+                        ? 'Opening login page...'
+                        : this.state.failed
+                        ? 'Could not login'
+                        : 'Login with Discord'}
                 </button>
             </div>
         );
