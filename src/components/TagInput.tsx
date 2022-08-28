@@ -21,7 +21,7 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
         this.title = props.title;
         this.placeholder = props.placeholder;
         this.state = {
-            tags: ['techno', 'bio-lightning', 'craft']
+            tags: []
         };
 
         this.handleChange = props.onChange;
