@@ -22,7 +22,7 @@ class TextInput extends React.Component<TextInputProps> {
 
     render() {
         return (
-            <div className="div-block-3">
+            <div id="first-input" className="div-block-3">
                 <label className="text-block">{this.props.title}</label>
                 <input
                     onChange={this.handleChange}

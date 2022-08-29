@@ -15,9 +15,13 @@ img,legend{border:0}legend,td,th{padding:0}html{font-family:sans-serif;-ms-text-
     /* border: 1px solid #000; */
 }
 
+.center {
+    text-align-last: center;
+}
+
 .div-block-2 {
     display: flex;
-    padding-top: 20px;
+    padding-top: 15px;
     -webkit-box-pack: center;
     -webkit-justify-content: center;
     -ms-flex-pack: center;
@@ -30,6 +34,10 @@ img,legend{border:0}legend,td,th{padding:0}html{font-family:sans-serif;-ms-text-
 
 .image {
     padding-top: 2%;
+}
+
+#first-input {
+    margin-top: 0;
 }
 
 .div-block-3 {
@@ -189,9 +197,7 @@ img,legend{border:0}legend,td,th{padding:0}html{font-family:sans-serif;-ms-text-
     display: flex;
     width: 90%;
     height: 8%;
-    margin-top: 3%;
-    margin-right: auto;
-    margin-left: auto;
+    margin: 3% auto;
     -webkit-box-pack: center;
     -webkit-justify-content: center;
     -ms-flex-pack: center;
@@ -207,7 +213,6 @@ img,legend{border:0}legend,td,th{padding:0}html{font-family:sans-serif;-ms-text-
     color: #fff;
     font-size: 20px;
     padding: 3px 0;
-    margin-bottom: 5px;
 }
 
 @media screen and (max-width: 479px) {

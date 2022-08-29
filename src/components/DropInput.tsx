@@ -23,7 +23,7 @@ class DropInput extends React.Component<DropInputProps> {
         return (
             <div className="div-block-3">
                 <div className="text-block">{this.props.title}</div>
-                <select onChange={this.handleChange} defaultValue="" className="div-block-4" style={{ width: '90%' }}>
+                <select onChange={this.handleChange} defaultValue="" className="div-block-4 center" style={{ width: '90%' }}>
                     <option value="" disabled>
                         {this.props.placeholder}
                     </option>
