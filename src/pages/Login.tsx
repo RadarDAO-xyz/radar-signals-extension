@@ -80,7 +80,16 @@ class Login extends React.Component<LoginProps, LoginState> {
             <Submit></Submit>
         ) : (
             <div className="button-back">
-                <img src="HeaderLogo.png" loading="lazy" alt="" className="login-image" width="173" />
+                <img
+                    src="HeaderLogo.png"
+                    loading="lazy"
+                    alt=""
+                    className="login-image"
+                    width="173"
+                />
+                <span className="header-text top">SIGNALS EXTENSION</span>
+                <span className="header-text sub">Connect your discord to begin</span>
+
                 <button className="login-button" onClick={this.handleClick}>
                     {this.state.started
                         ? 'Opening login page...'
