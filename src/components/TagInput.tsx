@@ -1,5 +1,5 @@
 import React from 'react';
-import '../pages/Submit.css';
+import '../styles/webflow.css';
 
 type TagInputProps = {
     title: string;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { AuthSaveKey, RequiredScopes } from '../constants';
-import './Login.css';
+import '../styles/minimal.css';
 import Submit from './Submit';
 import browser from 'webextension-polyfill';
 // let browser: any;
@@ -57,8 +57,6 @@ class Login extends React.Component<LoginProps, LoginState> {
                     this.setState({ finished: false });
                 }
             }
-        } else {
-            this.setState({ finished: true });
         }
     }
 

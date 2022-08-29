@@ -1,11 +1,18 @@
 .button-back {
-    width: 420px; /* x * 1.61803398875 = 420 */
+    width: 420px; /* golden ratio square */
     height: 260px;
     border: 1px black solid;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.button-div {
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+    gap: 2%;
 }
 
 .login-button {
@@ -33,4 +40,10 @@
 
 .header-text.sub {
     font-size: 12px;
+}
+
+.title {
+    padding-top: 10%;
+    font-weight: bold;
+    font-size: 20px;
 }

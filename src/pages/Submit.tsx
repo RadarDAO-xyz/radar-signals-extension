@@ -3,7 +3,8 @@ import DropInput from '../components/DropInput';
 import TagInput from '../components/TagInput';
 import TextInput from '../components/TextInput';
 import { AuthSaveKey, BackendURL } from '../constants';
-import './Submit.css';
+import '../styles/webflow.css';
+import Success from './Success';
 import browser from 'webextension-polyfill';
 // let browser: any;
 
@@ -108,70 +109,88 @@ class Submit extends React.Component<SubmitProps, SubmitState> {
     }
 
     async fetchChannels() {
-        let auth = await this.getAuth();
+        if (window.isExtension) {
+            let auth = await this.getAuth();
 
-        const headers = new Headers();
-        headers.set('Authorization', auth);
-        return fetch(`${BackendURL}/channels`, {
-            headers
-        })
-            .then(async x => {
-                if (x.ok) {
-                    console.log('Success');
-                    const channels = await x.json();
-                    this.channels = channels;
-                    return channels;
-                } else {
-                    console.error(await x.text());
-                }
+            const headers = new Headers();
+            headers.set('Authorization', auth);
+            return fetch(`${BackendURL}/channels`, {
+                headers
             })
-            .catch(e => {
-                this.setState({ failed: true });
-                console.error(e);
-            });
+                .then(async x => {
+                    if (x.ok) {
+                        console.log('Success');
+                        const channels = await x.json();
+                        this.channels = channels;
+                        return channels;
+                    } else {
+                        console.error(await x.text());
+                    }
+                })
+                .catch(e => {
+                    this.setState({ failed: true });
+                    console.error(e);
+                });
+        } else {
+            this.channels = [{ id: '000000000000000000', name: 'channel' }];
+        }
+    }
+
+    getChannelName() {
+        return this.channels.find(c => c.id === this.state.channelId)?.name;
     }
 
     async handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         if (this.state.submitting || this.state.submitted || this.state.failed) return;
         if (!this.checkInputs()) return;
-        this.setState({ submitting: true });
         console.log('Submitted');
+        if (window.isExtension) {
+            this.setState({ submitting: true });
+            let auth = await this.getAuth();
 
-        let auth = await this.getAuth();
-
-        const headers = new Headers();
-        headers.set('Content-Type', 'application/json');
-        headers.set('Authorization', auth);
-        fetch(`${BackendURL}/submit`, {
-            method: 'POST',
-            headers,
-            body: JSON.stringify({
-                title: this.state.title,
-                tags: this.state.tags,
-                url: this.state.url,
-                channelId: this.state.channelId,
-                comment: this.state.comment
+            const headers = new Headers();
+            headers.set('Content-Type', 'application/json');
+            headers.set('Authorization', auth);
+            fetch(`${BackendURL}/submit`, {
+                method: 'POST',
+                headers,
+                body: JSON.stringify({
+                    title: this.state.title,
+                    tags: this.state.tags,
+                    url: this.state.url,
+                    channelId: this.state.channelId,
+                    comment: this.state.comment
+                })
             })
-        })
-            .then(async x => {
-                if (x.ok) {
-                    this.setState({ submitting: false, submitted: true });
-                    console.log('Success');
-                } else {
+                .then(async x => {
+                    if (x.ok) {
+                        this.setState({ submitting: false, submitted: true });
+                        console.log('Success');
+                    } else {
+                        this.setState({ submitting: false, failed: true });
+                        console.error(await x.text());
+                    }
+                })
+                .catch(e => {
                     this.setState({ submitting: false, failed: true });
-                    console.error(await x.text());
-                }
-            })
-            .catch(e => {
-                this.setState({ submitting: false, failed: true });
-                console.error(e);
-            });
+                    console.error(e);
+                });
+        } else {
+            this.setState({ submitted: true });
+        }
     }
 
     render() {
         if (!this.state.url.startsWith('https://'))
             return <div>You cannot share this type of page</div>;
+        else if (this.state.submitted)
+            return (
+                <Success
+                    channelId={this.state.channelId}
+                    channelName={this.getChannelName() as string}
+                />
+            );
         else
             return (
                 // Some of this html was generated using webflow

@@ -1,5 +1,5 @@
 import React from 'react';
-import '../pages/Submit.css';
+import '../styles/webflow.css';
 
 export type DropInputProps = {
     title: string;
