@@ -49,7 +49,7 @@ class Submit extends React.Component<SubmitProps, SubmitState> {
 
     componentDidMount() {
         Promise.all([this.resolveTab(), this.fetchChannels()])
-            .then(() => this.checkInputs())
+            .then(() => this.setState({})) // Can't run checkInputs because it replaces error text from fetchChannels
             .catch(() => this.setState({ buttonText: 'Error occurred' }));
     }
 
@@ -124,7 +124,9 @@ class Submit extends React.Component<SubmitProps, SubmitState> {
                         this.channels = channels;
                         return channels;
                     } else {
-                        console.error(await x.text());
+                        const text = await x.text();
+                        this.setState({ failed: true, buttonText: text });
+                        console.error(text);
                     }
                 })
                 .catch(e => {
