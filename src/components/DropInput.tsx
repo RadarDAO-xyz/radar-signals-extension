@@ -28,7 +28,7 @@ class DropInput extends React.Component<DropInputProps> {
                         {this.props.placeholder}
                     </option>
                     {this.props.options.map(x => (
-                        <option value={x.id}>{x.name}</option>
+                        <option value={x.id}>#{x.name}</option>
                     ))}
                 </select>
             </div>
