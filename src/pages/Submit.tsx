@@ -221,7 +221,7 @@ class Submit extends React.Component<SubmitProps, SubmitState> {
                         title="What channel do you want to post it to?"
                         placeholder="↓ Select Channel ↓"
                         onChange={this.handleChannelChange}
-                        options={this.channels}
+                        options={this.channels.sort((a, b) => a.name.localeCompare(b.name))}
                     ></DropInput>
                     <div className="div-block-3">
                         <label className="text-block">
