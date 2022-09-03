@@ -13,7 +13,7 @@
     "icons": {
         "192": "logo192.png"
     },
-    "permissions": ["activeTab", "storage", "identity", "https://radar-signal-ext.herokuapp.com/"],
+    "permissions": ["activeTab", "storage", "identity"],
     "background": {
         "scripts": ["./background.js"]
     },
